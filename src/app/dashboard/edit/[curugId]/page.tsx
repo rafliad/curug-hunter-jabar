@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // Tambahkan useState
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { Button, Input, Textarea } from "@heroui/react";
 import axios from "axios";
@@ -11,26 +11,36 @@ export default function EditCurugPage() {
   const params = useParams();
   const curugId = params.curugId as string;
 
+  // State baru untuk loading data form
+  const [isFormLoading, setIsFormLoading] = useState(true);
+
   const {
     register,
     handleSubmit,
-    setValue,
-    formState: { isLoading },
-  } = useForm<FieldValues>();
+    reset,
+    formState: { isSubmitting },
+  } = useForm<FieldValues>({
+    defaultValues: {
+      name: "",
+      location: "",
+      description: "",
+      imageUrl: "",
+    },
+  });
 
-  // useEffect untuk mengambil data curug saat halaman dimuat
   useEffect(() => {
     if (curugId) {
-      axios.get(`/api/curug/${curugId}`).then((response) => {
-        const { name, location, description, imageUrl } = response.data;
-        // Gunakan setValue untuk mengisi form dengan data yang ada
-        setValue("name", name);
-        setValue("location", location);
-        setValue("description", description);
-        setValue("imageUrl", imageUrl);
-      });
+      setIsFormLoading(true); // Mulai loading
+      axios
+        .get(`/api/curug/${curugId}`)
+        .then((response) => {
+          reset(response.data); // Isi form dengan data
+        })
+        .finally(() => {
+          setIsFormLoading(false); // Selesai loading
+        });
     }
-  }, [curugId, setValue]);
+  }, [curugId, reset]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -45,24 +55,32 @@ export default function EditCurugPage() {
   return (
     <div className="p-8 max-w-lg mx-auto">
       <h1 className="text-2xl font-bold mb-6">Edit Data Curug</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <Input {...register("name")} label="Nama Curug" variant="flat" />
-        <Input {...register("location")} label="Lokasi" variant="flat" />
-        <Textarea
-          {...register("description")}
-          label="Deskripsi"
-          variant="flat"
-        />
-        <Input {...register("imageUrl")} label="URL Gambar" variant="flat" />
-        <div className="flex gap-4 pt-4">
-          <Button type="submit" color="primary" disabled={isLoading}>
-            Update
-          </Button>
-          <Button type="button" onClick={() => router.back()} color="secondary">
-            Batal
-          </Button>
-        </div>
-      </form>
+      {isFormLoading ? (
+        <p>Loading form...</p>
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <Input {...register("name")} label="Nama Curug" variant="flat" />
+          <Input {...register("location")} label="Lokasi" variant="flat" />
+          <Textarea
+            {...register("description")}
+            label="Deskripsi"
+            variant="flat"
+          />
+          <Input {...register("imageUrl")} label="URL Gambar" variant="flat" />
+          <div className="flex gap-4 pt-4">
+            <Button type="submit" color="primary" disabled={isSubmitting}>
+              Update
+            </Button>
+            <Button
+              type="button"
+              onClick={() => router.back()}
+              color="secondary"
+            >
+              Batal
+            </Button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
