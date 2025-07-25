@@ -90,7 +90,9 @@ export default function DashboardPage() {
                 className="px-6 py-4 flex justify-between items-center"
               >
                 <div>
-                  <p className="font-semibold text-lg">{curug.name}</p>
+                  <Link href={`/curug/${curug.id}`} className="hover:underline">
+                    <p className="font-semibold text-lg">{curug.name}</p>
+                  </Link>
                   <p className="text-gray-500">{curug.location}</p>
                 </div>
                 <div className="flex gap-4">
