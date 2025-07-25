@@ -23,69 +23,26 @@ export default function AddCurugPage() {
     <div className="p-8 max-w-lg mx-auto">
       <h1 className="text-2xl font-bold mb-6">Tambah Data Curug Baru</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            Nama Curug
-          </label>
-          <div className="mt-2">
-            <Input
-              isRequired
-              id="name"
-              {...register("name", { required: true })}
-              variant="bordered"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="location"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            Lokasi (Contoh: Kab. Bandung Barat)
-          </label>
-          <div className="mt-2">
-            <Input
-              isRequired
-              id="location"
-              {...register("location", { required: true })}
-              variant="bordered"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            Deskripsi
-          </label>
-          <div className="mt-2">
-            <Textarea
-              isRequired
-              id="description"
-              {...register("description", { required: true })}
-              variant="bordered"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="imageUrl"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            URL Gambar (Opsional)
-          </label>
-          <div className="mt-2">
-            <Input id="imageUrl" {...register("imageUrl")} variant="bordered" />
-          </div>
-        </div>
-
+        <Input
+          {...register("name", { required: true })}
+          label="Nama Curug"
+          variant="flat"
+        />
+        <Input
+          {...register("location", { required: true })}
+          label="Lokasi (Contoh: Kab. Bandung Barat)"
+          variant="flat"
+        />
+        <Textarea
+          {...register("description", { required: true })}
+          label="Deskripsi"
+          variant="flat"
+        />
+        <Input
+          {...register("imageUrl")}
+          label="URL Gambar (Opsional)"
+          variant="flat"
+        />
         <div className="flex gap-4 pt-4">
           <Button type="submit" color="primary">
             Simpan

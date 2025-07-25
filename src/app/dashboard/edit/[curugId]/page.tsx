@@ -2,8 +2,7 @@
 
 import { useEffect } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
-import { Input, Textarea } from "@heroui/react";
-import { Button } from "@heroui/button";
+import { Button, Input, Textarea } from "@heroui/react";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
 
@@ -19,10 +18,12 @@ export default function EditCurugPage() {
     formState: { isLoading },
   } = useForm<FieldValues>();
 
+  // useEffect untuk mengambil data curug saat halaman dimuat
   useEffect(() => {
     if (curugId) {
       axios.get(`/api/curug/${curugId}`).then((response) => {
         const { name, location, description, imageUrl } = response.data;
+        // Gunakan setValue untuk mengisi form dengan data yang ada
         setValue("name", name);
         setValue("location", location);
         setValue("description", description);
@@ -45,54 +46,14 @@ export default function EditCurugPage() {
     <div className="p-8 max-w-lg mx-auto">
       <h1 className="text-2xl font-bold mb-6">Edit Data Curug</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            Nama Curug
-          </label>
-          <div className="mt-2">
-            <Input id="name" {...register("name")} variant="bordered" />
-          </div>
-        </div>
-        <div>
-          <label
-            htmlFor="location"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            Lokasi
-          </label>
-          <div className="mt-2">
-            <Input id="location" {...register("location")} variant="bordered" />
-          </div>
-        </div>
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            Deskripsi
-          </label>
-          <div className="mt-2">
-            <Textarea
-              id="description"
-              {...register("description")}
-              variant="bordered"
-            />
-          </div>
-        </div>
-        <div>
-          <label
-            htmlFor="imageUrl"
-            className="block text-sm font-medium leading-6 text-white-900"
-          >
-            URL Gambar
-          </label>
-          <div className="mt-2">
-            <Input id="imageUrl" {...register("imageUrl")} variant="bordered" />
-          </div>
-        </div>
+        <Input {...register("name")} label="Nama Curug" variant="flat" />
+        <Input {...register("location")} label="Lokasi" variant="flat" />
+        <Textarea
+          {...register("description")}
+          label="Deskripsi"
+          variant="flat"
+        />
+        <Input {...register("imageUrl")} label="URL Gambar" variant="flat" />
         <div className="flex gap-4 pt-4">
           <Button type="submit" color="primary" disabled={isLoading}>
             Update
