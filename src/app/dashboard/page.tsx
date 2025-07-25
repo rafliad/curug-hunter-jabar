@@ -5,7 +5,6 @@ import { Button } from "@heroui/react";
 import Link from "next/link";
 import axios from "axios";
 
-// Definisikan tipe untuk data curug agar lebih aman
 type Curug = {
   id: string;
   name: string;
@@ -16,21 +15,33 @@ export default function DashboardPage() {
   const [curugList, setCurugList] = useState<Curug[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Gunakan useEffect untuk mengambil data saat komponen pertama kali dimuat
-  useEffect(() => {
-    const fetchCurugData = async () => {
-      try {
-        const response = await axios.get("/api/curug");
-        setCurugList(response.data);
-      } catch (error) {
-        console.error("Gagal mengambil data curug:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchCurugData = async () => {
+    try {
+      const response = await axios.get("/api/curug");
+      setCurugList(response.data);
+    } catch (error) {
+      console.error("Gagal mengambil data curug:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCurugData();
   }, []);
+
+  const handleDelete = async (curugId: string) => {
+    // Tambahkan konfirmasi sebelum menghapus
+    if (window.confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+      try {
+        await axios.delete(`/api/curug/${curugId}`);
+        // Refresh data setelah berhasil menghapus
+        fetchCurugData();
+      } catch (error) {
+        console.error("Gagal menghapus data:", error);
+      }
+    }
+  };
 
   if (isLoading) {
     return <div className="p-8">Loading...</div>;
@@ -56,10 +67,21 @@ export default function DashboardPage() {
                 <p className="text-gray-500">{curug.location}</p>
               </div>
               <div className="flex gap-4">
-                <Button color="secondary" size="sm">
+                {/* Tombol Edit sekarang menjadi Link */}
+                <Button
+                  as={Link}
+                  href={`/dashboard/edit/${curug.id}`}
+                  color="secondary"
+                  size="sm"
+                >
                   Edit
                 </Button>
-                <Button color="danger" size="sm">
+                {/* Tombol Delete sekarang memanggil fungsi handleDelete */}
+                <Button
+                  onClick={() => handleDelete(curug.id)}
+                  color="danger"
+                  size="sm"
+                >
                   Delete
                 </Button>
               </div>
