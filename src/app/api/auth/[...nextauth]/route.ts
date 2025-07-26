@@ -1,12 +1,13 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/lib/prisma"; // Menggunakan Prisma Client terpusat
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { Adapter } from "next-auth/adapters"; // <-- 1. Import Adapter
 
-export const authOptions = {
-  adapter: PrismaAdapter(prisma),
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -46,21 +47,29 @@ export const authOptions = {
       },
     }),
   ],
-  // Strategi sesi 'database' adalah best practice saat menggunakan adapter
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
-  // Menambahkan secret secara eksplisit untuk keamanan
   secret: process.env.NEXTAUTH_SECRET,
-  // Callbacks untuk menambahkan 'role' ke sesi
   callbacks: {
-    async session({ session, user }: any) {
-      session.user.role = user.role;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as any;
+      }
       return session;
     },
   },
 };
 
-const handler = NextAuth(authOptions as any);
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
