@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import SafeImage from "@/components/SafeImage";
+import CreateReviewForm from "@/components/CreateReviewForm";
 // Definisikan tipe untuk params agar lebih aman
 type CurugDetailPageProps = {
   params: {
@@ -52,7 +53,10 @@ export default async function CurugDetailPage({
           {curug.description}
         </p>
       </div>
-
+      <div>
+        {/* ... */}
+        <CreateReviewForm curugId={curug.id} />
+      </div>
       {/* Bagian Ulasan */}
       <div>
         <h2 className="text-2xl font-bold border-b pb-2 mb-4">

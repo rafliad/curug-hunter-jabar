@@ -5,10 +5,12 @@ import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 import { Button, Input } from "@heroui/react";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Variant = "LOGIN" | "REGISTER";
 
 export default function AuthPage() {
+  const router = useRouter(); // <-- Tambahkan baris ini
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,8 +44,7 @@ export default function AuthPage() {
             console.error("Invalid credentials");
           }
           if (callback?.ok && !callback?.error) {
-            console.log("Logged in!");
-            // redirect ke halaman utama di sini
+            router.push("/dashboard");
           }
         })
         .finally(() => setIsLoading(false));
@@ -53,7 +54,12 @@ export default function AuthPage() {
   const socialAction = (action: string) => {
     setIsLoading(true);
     signIn(action, { redirect: false })
-      .catch((error: any) => console.error("Social login failed", error)) // Perbaikan: Menambahkan tipe 'any'
+      .then((callback) => {
+        if (callback?.ok && !callback?.error) {
+          router.push("/dashboard");
+        }
+      })
+      .catch((error) => console.error("Social login failed", error))
       .finally(() => setIsLoading(false));
   };
 

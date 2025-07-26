@@ -11,6 +11,7 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import axios from "axios";
+import { signOut } from "next-auth/react";
 
 type Curug = {
   id: string;
@@ -91,7 +92,9 @@ export default function DashboardPage() {
               >
                 <div>
                   <Link href={`/curug/${curug.id}`} className="hover:underline">
-                    <p className="font-semibold text-lg">{curug.name}</p>
+                    <p className="font-semibold text-lg text-black">
+                      {curug.name}
+                    </p>
                   </Link>
                   <p className="text-gray-500">{curug.location}</p>
                 </div>
