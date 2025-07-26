@@ -6,7 +6,7 @@ export async function GET(
   request: Request,
   { params }: { params: { curugId: string } }
 ) {
-  const { curugId } = params;
+  const { curugId } = await params;
   const curug = await prisma.curug.findUnique({
     where: { id: curugId },
   });
@@ -18,7 +18,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: { curugId: string } }
 ) {
-  const { curugId } = params;
+  const { curugId } = await params;
   const body = await request.json();
   const { name, description, location, imageUrl } = body;
 
@@ -34,7 +34,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { curugId: string } }
 ) {
-  const { curugId } = params;
+  const { curugId } = await params;
   await prisma.curug.delete({
     where: { id: curugId },
   });
