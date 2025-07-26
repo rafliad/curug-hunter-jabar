@@ -28,7 +28,11 @@ export default function Navbar() {
                   <span className="mr-4 text-gray-700">
                     Halo, {session.user?.name}
                   </span>
-                  <Button color="danger" size="sm" onClick={() => signOut()}>
+                  <Button
+                    color="danger"
+                    size="sm"
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                  >
                     Logout
                   </Button>
                 </>

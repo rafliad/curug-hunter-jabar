@@ -75,11 +75,11 @@ model Review {
 
   // Relasi dengan User
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   // Relasi dengan Curug
   curugId   String
-  curug     Curug    @relation(fields: [curugId], references: [id])
+  curug     Curug    @relation(fields: [curugId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -53,14 +53,12 @@ export default function AuthPage() {
 
   const socialAction = (action: string) => {
     setIsLoading(true);
-    signIn(action, { redirect: false })
-      .then((callback) => {
-        if (callback?.ok && !callback?.error) {
-          router.push("/dashboard");
-        }
-      })
-      .catch((error) => console.error("Social login failed", error))
-      .finally(() => setIsLoading(false));
+    signIn(action, {
+      callbackUrl: "/dashboard",
+    }).catch((error) => {
+      console.error("Social login failed", error);
+      setIsLoading(false);
+    });
   };
 
   return (
