@@ -42,11 +42,13 @@ export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
       <h3 className="text-xl font-bold mb-4">Tulis Ulasan Anda</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Textarea
+          isRequired
           {...register("content", { required: true })}
           label="Ulasan Anda"
           variant="flat"
         />
         <Input
+          isRequired
           {...register("rating", { required: true, min: 1, max: 5 })}
           label="Rating (1-5)"
           type="number"

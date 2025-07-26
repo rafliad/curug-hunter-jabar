@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import SafeImage from "@/components/SafeImage";
 import CreateReviewForm from "@/components/CreateReviewForm";
+import ReviewItem from "@/components/ReviewItem";
 // Definisikan tipe untuk params agar lebih aman
 type CurugDetailPageProps = {
   params: {
@@ -65,37 +66,7 @@ export default async function CurugDetailPage({
         <div className="space-y-6">
           {curug.reviews.length > 0 ? (
             curug.reviews.map((review) => (
-              <div key={review.id} className="bg-white p-4 rounded-lg shadow">
-                <div className="flex items-center mb-2">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 mr-3 flex items-center justify-center overflow-hidden">
-                    {/* Tampilkan gambar profil penulis jika ada */}
-                    {review.author.image ? (
-                      <SafeImage
-                        src={review.author.image}
-                        alt={review.author.name || "User"}
-                        width={40}
-                        height={40}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <span className="text-lg font-bold text-gray-500">
-                        {review.author.name?.charAt(0).toUpperCase()}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <p className="font-semibold">{review.author.name}</p>
-                    <p className="text-xs text-gray-400">
-                      {new Date(review.createdAt).toLocaleDateString("id-ID", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-gray-800">{review.content}</p>
-              </div>
+              <ReviewItem key={review.id} review={review} />
             ))
           ) : (
             <p className="text-gray-500">Belum ada ulasan untuk curug ini.</p>
