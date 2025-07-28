@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { normalizeLocation } from "@/lib/utils/formatters";
 
 // Fungsi untuk mengambil SATU data curug berdasarkan ID
 export async function GET(
@@ -20,7 +21,11 @@ export async function PATCH(
 ) {
   const { curugId } = await params;
   const body = await request.json();
-  const { name, description, location, imageUrl } = body;
+  let { name, description, location, imageUrl } = body;
+
+  if (location) {
+    location = normalizeLocation(location);
+  }
 
   const updatedCurug = await prisma.curug.update({
     where: { id: curugId },
