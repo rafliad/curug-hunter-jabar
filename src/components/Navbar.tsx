@@ -25,9 +25,12 @@ export default function Navbar() {
                 <p>Loading...</p>
               ) : session ? (
                 <>
-                  <span className="mr-4 text-gray-700">
+                  <Link
+                    href="/profile"
+                    className="mr-4 text-gray-700 hover:underline"
+                  >
                     Halo, {session.user?.name}
-                  </span>
+                  </Link>
                   <Button
                     color="danger"
                     size="sm"
