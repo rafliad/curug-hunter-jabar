@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import curugReducer from "./slices/curugSlice";
 
 export const store = configureStore({
   reducer: {
-    //
+    curug: curugReducer,
   },
 });
 
