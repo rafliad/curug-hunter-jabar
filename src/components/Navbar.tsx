@@ -12,10 +12,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <Link
-              href="/dashboard"
-              className="text-2xl font-bold text-gray-800"
-            >
+            <Link href="/" className="text-2xl font-bold text-gray-800">
               Curug Hunter
             </Link>
           </div>
@@ -40,7 +37,7 @@ export default function Navbar() {
                   </Button>
                 </>
               ) : (
-                <Button as={Link} href="/" color="primary" size="sm">
+                <Button as={Link} href="/auth" color="primary" size="sm">
                   Login
                 </Button>
               )}
