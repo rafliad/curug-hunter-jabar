@@ -1,42 +1,62 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { Curug } from "@prisma/client";
 
-// Definisikan tipe untuk state kita
 interface CurugState {
   allCurug: Curug[];
   filteredCurug: Curug[];
   searchTerm: string;
+  activeFilters: string[];
 }
 
 const initialState: CurugState = {
   allCurug: [],
   filteredCurug: [],
   searchTerm: "",
+  activeFilters: [],
+};
+
+const applyFiltersAndSearch = (state: CurugState) => {
+  let result = state.allCurug;
+
+  if (state.activeFilters.length > 0) {
+    result = result.filter((curug) =>
+      state.activeFilters.includes(curug.location)
+    );
+  }
+
+  if (state.searchTerm) {
+    result = result.filter((curug) =>
+      curug.name.toLowerCase().includes(state.searchTerm.toLowerCase())
+    );
+  }
+
+  state.filteredCurug = result;
 };
 
 export const curugSlice = createSlice({
   name: "curug",
   initialState,
   reducers: {
-    // Action untuk mengisi state dengan data awal dari server
     setInitialCurug: (state, action: PayloadAction<Curug[]>) => {
       state.allCurug = action.payload;
-      state.filteredCurug = action.payload;
+      applyFiltersAndSearch(state);
     },
-    // Action untuk mencari curug berdasarkan nama
     searchCurug: (state, action: PayloadAction<string>) => {
-      const searchTerm = action.payload.toLowerCase();
       state.searchTerm = action.payload;
-      if (searchTerm === "") {
-        state.filteredCurug = state.allCurug;
+      applyFiltersAndSearch(state);
+    },
+    toggleFilter: (state, action: PayloadAction<string>) => {
+      const filter = action.payload;
+      if (state.activeFilters.includes(filter)) {
+        state.activeFilters = state.activeFilters.filter((f) => f !== filter);
       } else {
-        state.filteredCurug = state.allCurug.filter((curug) =>
-          curug.name.toLowerCase().includes(searchTerm)
-        );
+        state.activeFilters.push(filter);
       }
+      applyFiltersAndSearch(state);
     },
   },
 });
 
-export const { setInitialCurug, searchCurug } = curugSlice.actions;
+export const { setInitialCurug, searchCurug, toggleFilter } =
+  curugSlice.actions;
 export default curugSlice.reducer;
