@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react"; // Import useState
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { Button, Textarea, Input } from "@heroui/react";
 import axios from "axios";
@@ -14,14 +15,26 @@ export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
   const router = useRouter();
   const { data: session, status } = useSession();
   const { register, handleSubmit, reset } = useForm<FieldValues>();
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await axios.post("/api/reviews", { ...data, curugId });
+      const response = await axios.post("/api/reviews", { ...data, curugId });
       reset();
       router.refresh();
+
+      if (response.data.status === "PENDING") {
+        setSubmitMessage(
+          "Ulasan Anda telah disimpan! Silakan periksa email Anda untuk verifikasi agar ulasan dapat dipublikasikan."
+        );
+      } else {
+        setSubmitMessage(
+          "Terima kasih! Ulasan Anda telah berhasil dipublikasikan."
+        );
+      }
     } catch (error) {
       console.error("Gagal mengirim ulasan:", error);
+      setSubmitMessage("Terjadi kesalahan saat mengirim ulasan.");
     }
   };
 
@@ -31,8 +44,16 @@ export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
 
   if (status === "unauthenticated") {
     return (
-      <p className="text-center p-4 bg-amber-950 rounded-lg">
+      <p className="text-center p-4 bg-yellow-100 rounded-lg">
         Silakan login untuk memberikan ulasan.
+      </p>
+    );
+  }
+
+  if (submitMessage) {
+    return (
+      <p className="text-center p-4 bg-green-100 text-green-800 rounded-lg">
+        {submitMessage}
       </p>
     );
   }
