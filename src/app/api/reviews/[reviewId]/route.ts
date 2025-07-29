@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "@/lib/prisma";
 
-// Fungsi helper untuk memeriksa kepemilikan ulasan
 async function checkOwnership(reviewId: string, userId: string) {
   const review = await prisma.review.findUnique({
     where: { id: reviewId },
@@ -19,7 +18,6 @@ export async function PATCH(
   if (!session?.user?.id)
     return new NextResponse("Unauthorized", { status: 401 });
 
-  // Cek apakah pengguna adalah pemilik ulasan
   if (!(await checkOwnership(params.reviewId, session.user.id))) {
     return new NextResponse("Forbidden", { status: 403 });
   }
@@ -44,15 +42,11 @@ export async function PATCH(
   return NextResponse.json(updatedReview);
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { reviewId: string } }
-) {
+export async function DELETE({ params }: { params: { reviewId: string } }) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id)
     return new NextResponse("Unauthorized", { status: 401 });
 
-  // Cek apakah pengguna adalah pemilik ulasan
   if (!(await checkOwnership(params.reviewId, session.user.id))) {
     return new NextResponse("Forbidden", { status: 403 });
   }
