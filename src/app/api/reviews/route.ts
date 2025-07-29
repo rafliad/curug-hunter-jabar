@@ -23,9 +23,14 @@ export async function POST(request: Request) {
 
   const reviewStatus = user.emailVerified ? "PUBLISHED" : "PENDING";
 
-  if (!user.emailVerified) {
-    console.log(
-      `User ${user.email} is not verified. A verification email should be sent.`
+  if (!user.emailVerified && user.email) {
+    await fetch(
+      `${process.env.NEXTAUTH_URL}/api/auth/send-verification-email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email }),
+      }
     );
   }
 
