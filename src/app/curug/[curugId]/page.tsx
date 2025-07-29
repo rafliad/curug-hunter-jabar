@@ -14,13 +14,15 @@ export default async function CurugDetailPage({
 }: CurugDetailPageProps) {
   const { curugId } = await params;
 
-  // Ambil data curug spesifik DAN semua ulasannya (beserta data penulisnya)
   const curug = await prisma.curug.findUnique({
     where: { id: curugId },
     include: {
       reviews: {
+        where: {
+          status: "PUBLISHED",
+        },
         include: {
-          author: true, // Sertakan data penulis untuk setiap ulasan
+          author: true,
         },
         orderBy: {
           createdAt: "desc",
