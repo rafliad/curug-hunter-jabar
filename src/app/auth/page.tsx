@@ -18,11 +18,7 @@ export default function AuthPage() {
     setVariant((prev) => (prev === "LOGIN" ? "REGISTER" : "LOGIN"));
   }, []);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const { register, handleSubmit } = useForm<FieldValues>({
     defaultValues: { name: "", email: "", password: "" },
   });
 
@@ -33,7 +29,13 @@ export default function AuthPage() {
       axios
         .post("/api/register", data)
         .then(() => signIn("credentials", data))
-        .catch((error: any) => console.error("Registration failed", error))
+        .catch((error) => {
+          if (error instanceof Error) {
+            console.error("Registration failed:", error.message);
+          } else {
+            console.error("An unexpected registration error occurred:", error);
+          }
+        })
         .finally(() => setIsLoading(false));
     }
 

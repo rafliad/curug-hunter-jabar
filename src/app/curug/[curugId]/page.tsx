@@ -2,25 +2,23 @@ import prisma from "@/lib/prisma";
 import SafeImage from "@/components/SafeImage";
 import CreateReviewForm from "@/components/CreateReviewForm";
 import ReviewItem from "@/components/ReviewItem";
-// Definisikan tipe untuk params agar lebih aman
-type CurugDetailPageProps = {
-  params: {
-    curugId: string;
-  };
-};
 
 export default async function CurugDetailPage({
   params,
-}: CurugDetailPageProps) {
+}: {
+  params: Promise<{ curugId: string }>;
+}) {
   const { curugId } = await params;
 
-  // Ambil data curug spesifik DAN semua ulasannya (beserta data penulisnya)
   const curug = await prisma.curug.findUnique({
     where: { id: curugId },
     include: {
       reviews: {
+        where: {
+          status: "PUBLISHED",
+        },
         include: {
-          author: true, // Sertakan data penulis untuk setiap ulasan
+          author: true,
         },
         orderBy: {
           createdAt: "desc",

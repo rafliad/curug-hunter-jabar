@@ -22,8 +22,12 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(user);
-  } catch (error: any) {
-    console.error("REGISTRATION_ERROR", error);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("REGISTRATION_ERROR:", error.message);
+    } else {
+      console.error("An unexpected error occurred:", error);
+    }
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

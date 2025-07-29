@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { normalizeLocation } from "@/lib/utils/formatters";
 
 // Fungsi untuk mengambil SATU data curug berdasarkan ID
 export async function GET(
-  request: Request,
-  { params }: { params: { curugId: string } }
+  _request: Request,
+  { params }: { params: Promise<{ curugId: string }> }
 ) {
   const { curugId } = await params;
   const curug = await prisma.curug.findUnique({
@@ -16,11 +17,16 @@ export async function GET(
 // Fungsi untuk MENGUPDATE data curug berdasarkan ID
 export async function PATCH(
   request: Request,
-  { params }: { params: { curugId: string } }
+  { params }: { params: Promise<{ curugId: string }> }
 ) {
   const { curugId } = await params;
   const body = await request.json();
-  const { name, description, location, imageUrl } = body;
+  const { name, description, imageUrl } = body;
+  let { location } = body;
+
+  if (location) {
+    location = normalizeLocation(location);
+  }
 
   const updatedCurug = await prisma.curug.update({
     where: { id: curugId },
@@ -31,8 +37,8 @@ export async function PATCH(
 
 // Fungsi untuk MENGHAPUS data curug berdasarkan ID
 export async function DELETE(
-  request: Request,
-  { params }: { params: { curugId: string } }
+  _request: Request,
+  { params }: { params: Promise<{ curugId: string }> }
 ) {
   const { curugId } = await params;
   await prisma.curug.delete({

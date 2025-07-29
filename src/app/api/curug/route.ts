@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { normalizeLocation } from "@/lib/utils/formatters";
 
-export async function GET(request: Request) {
+export async function GET() {
   const curug = await prisma.curug.findMany({
     orderBy: {
       createdAt: "desc",
@@ -12,7 +13,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { name, description, location, imageUrl } = body;
+  const { name, description, imageUrl } = body;
+  let { location } = body;
+
+  location = normalizeLocation(location);
 
   const newCurug = await prisma.curug.create({
     data: {
