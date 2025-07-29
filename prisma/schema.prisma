@@ -69,18 +69,24 @@ model Curug {
 // MODEL REVIEW (ULASAN)
 // =========================================
 model Review {
-  id        String   @id @default(cuid())
-  content   String   @db.Text
-  rating    Int      // Rating dari 1 sampai 5
+  id        String        @id @default(cuid())
+  content   String        @db.Text
+  rating    Int           // Rating dari 1 sampai 5
+  status    ReviewStatus  @default(PUBLISHED)
 
   // Relasi dengan User
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author    User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   // Relasi dengan Curug
   curugId   String
-  curug     Curug    @relation(fields: [curugId], references: [id], onDelete: Cascade)
+  curug     Curug         @relation(fields: [curugId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum ReviewStatus{
+  PENDING
+  PUBLISHED
 }
