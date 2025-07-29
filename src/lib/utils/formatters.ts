@@ -1,3 +1,5 @@
+import prisma from "@/lib/prisma";
+
 // Normalizing every location of 'curug' added
 export const normalizeLocation = (location: string): string => {
   if (!location) return "";
@@ -8,3 +10,10 @@ export const normalizeLocation = (location: string): string => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+export async function checkOwnership(reviewId: string, userId: string) {
+  const review = await prisma.review.findUnique({
+    where: { id: reviewId },
+  });
+  return review?.authorId === userId;
+}

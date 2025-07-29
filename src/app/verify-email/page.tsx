@@ -3,8 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Suspense } from "react";
 
-export default function VerifyEmailPage() {
+function VerifyEmail() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [status, setStatus] = useState("Verifying...");
@@ -13,7 +14,7 @@ export default function VerifyEmailPage() {
     if (token) {
       axios
         .post("/api/auth/verify-email", { token })
-        .then((response) => {
+        .then(() => {
           setStatus(
             "Email Anda telah berhasil diverifikasi! Ulasan Anda sekarang sudah dipublikasikan."
           );
@@ -38,5 +39,13 @@ export default function VerifyEmailPage() {
         <p>{status}</p>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense>
+      <VerifyEmail />
+    </Suspense>
   );
 }

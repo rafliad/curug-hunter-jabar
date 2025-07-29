@@ -13,7 +13,7 @@ type CreateReviewFormProps = {
 
 export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const { register, handleSubmit, reset } = useForm<FieldValues>();
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 

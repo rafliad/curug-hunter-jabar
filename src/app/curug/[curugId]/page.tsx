@@ -2,16 +2,12 @@ import prisma from "@/lib/prisma";
 import SafeImage from "@/components/SafeImage";
 import CreateReviewForm from "@/components/CreateReviewForm";
 import ReviewItem from "@/components/ReviewItem";
-// Definisikan tipe untuk params agar lebih aman
-type CurugDetailPageProps = {
-  params: {
-    curugId: string;
-  };
-};
 
 export default async function CurugDetailPage({
   params,
-}: CurugDetailPageProps) {
+}: {
+  params: Promise<{ curugId: string }>;
+}) {
   const { curugId } = await params;
 
   const curug = await prisma.curug.findUnique({

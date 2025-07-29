@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image, { ImageProps } from "next/image";
 
 // Fungsi untuk validasi URL
@@ -9,7 +9,7 @@ const isValidUrl = (url: string | null | undefined): boolean => {
   try {
     new URL(url);
     return true;
-  } catch (e) {
+  } catch (_e) {
     // Juga anggap path internal (seperti /placeholder.png) valid
     return url.startsWith("/");
   }

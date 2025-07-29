@@ -11,7 +11,6 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import axios from "axios";
-import { signOut } from "next-auth/react";
 
 type Curug = {
   id: string;
