@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { normalizeLocation } from "@/lib/utils/formatters";
+import { normalize } from "@/lib/utils/formatters";
 
 // Fungsi untuk mengambil SATU data curug berdasarkan ID
 export async function GET(
@@ -21,16 +21,40 @@ export async function PATCH(
 ) {
   const { curugId } = await params;
   const body = await request.json();
-  const { name, description, imageUrl } = body;
+  const {
+    name,
+    description,
+    imageUrl,
+    ticketPrice,
+    difficulty,
+    tags,
+    openingHours,
+  } = body;
   let { location } = body;
 
   if (location) {
-    location = normalizeLocation(location);
+    location = normalize(location);
   }
+
+  const price = ticketPrice ? parseInt(String(ticketPrice), 10) : null;
+  // Ubah string tags kembali menjadi array sebelum disimpan
+  const tagArray =
+    typeof tags === "string"
+      ? tags.split(",").map((tag: string) => tag.trim())
+      : [];
 
   const updatedCurug = await prisma.curug.update({
     where: { id: curugId },
-    data: { name, description, location, imageUrl },
+    data: {
+      name,
+      description,
+      location,
+      imageUrl,
+      ticketPrice: price,
+      difficulty,
+      tags: tagArray,
+      openingHours, // Langsung simpan objek JSON
+    },
   });
   return NextResponse.json(updatedCurug);
 }
