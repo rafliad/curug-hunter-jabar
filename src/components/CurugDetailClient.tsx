@@ -7,6 +7,7 @@ import CreateReviewForm from "@/components/CreateReviewForm";
 import ReviewItem from "@/components/ReviewItem";
 import OpeningHoursDisplay from "@/components/OpeningHoursDisplay";
 import { Prisma } from "@prisma/client";
+import SuggestionButton from "./SuggestionButton";
 
 // Definisikan tipe yang lebih lengkap untuk data yang kita terima
 type ReviewWithAuthor = Review & { author: User };
@@ -77,6 +78,12 @@ export default function CurugDetailClient({
                     {curug.ticketPrice
                       ? `Rp ${curug.ticketPrice.toLocaleString("id-ID")}`
                       : "Gratis / Tidak ada data"}
+                    <SuggestionButton
+                      curugId={curug.id}
+                      fieldName="ticketPrice"
+                      currentValue={curug.ticketPrice}
+                      label="Harga Tiket"
+                    />
                   </p>
                   <p>
                     <strong>Tingkat Kesulitan:</strong>{" "}
@@ -84,6 +91,12 @@ export default function CurugDetailClient({
                       ? curug.difficulty.charAt(0) +
                         curug.difficulty.slice(1).toLowerCase()
                       : "Tidak ada data"}
+                    <SuggestionButton
+                      curugId={curug.id}
+                      fieldName="difficulty"
+                      currentValue={curug.difficulty}
+                      label="Tingkat Kesulitan"
+                    />
                   </p>
                 </div>
               </CardBody>

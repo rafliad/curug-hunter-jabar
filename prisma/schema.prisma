@@ -23,6 +23,7 @@ model User {
   role            UserRole  @default(USER) // Menambahkan role untuk user
   accounts        Account[]
   reviews         Review[] // Relasi: Satu User bisa punya banyak Review
+  suggestions     DataSuggestion[]
 }
 
 model Account {
@@ -66,6 +67,7 @@ model Curug {
   difficulty    Difficulty? // Tingkat kesulitan (opsional)
   tags          String[]  // Tags seperti "Ramah Anak", dll.
   openingHours  Json?   // Jam buka (opsional, cth: "08:00 - 17:00")
+  suggestions   DataSuggestion[]
 }
 
 // Tambahkan Enum baru ini di mana saja di dalam file schema
@@ -73,6 +75,28 @@ enum Difficulty {
   MUDAH
   SEDANG
   SULIT
+}
+
+model DataSuggestion {
+  id            String    @id @default(cuid())
+  curugId       String
+  curug         Curug     @relation(fields: [curugId], references: [id], onDelete: Cascade)
+
+  suggestedBy   User      @relation(fields: [suggestedById], references: [id], onDelete: Cascade)
+  suggestedById String
+
+  fieldName     String    // cth: "ticketPrice", "openingHours.senin"
+  oldValue      String?
+  newValue      String
+
+  status        SuggestionStatus @default(PENDING)
+  createdAt     DateTime  @default(now())
+}
+
+enum SuggestionStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 

@@ -1,0 +1,128 @@
+"use client";
+
+import { useState } from "react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Input,
+  Checkbox,
+} from "@heroui/react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
+
+type SuggestionButtonProps = {
+  curugId: string;
+  fieldName: string;
+  currentValue: string | number | null | undefined;
+  label: string;
+};
+
+export default function SuggestionButton({
+  curugId,
+  fieldName,
+  currentValue,
+  label,
+}: SuggestionButtonProps) {
+  const { status } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
+  const [newValue, setNewValue] = useState("");
+  const [isFree, setIsFree] = useState(false);
+
+  const handleFreeChange = (checked: boolean) => {
+    setIsFree(checked);
+    if (checked) {
+      setNewValue("0");
+    } else {
+      setNewValue("");
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!isFree && !newValue.trim()) {
+      toast.error("Silakan masukkan nilai baru atau tandai sebagai gratis.");
+      return;
+    }
+
+    const toastId = toast.loading("Mengirim saran...");
+    try {
+      await axios.post("/api/suggestions", {
+        curugId,
+        fieldName,
+        oldValue: String(currentValue || ""),
+        newValue: isFree ? "0" : newValue,
+      });
+      toast.success("Terima kasih! Saran Anda telah terkirim.", {
+        id: toastId,
+      });
+      setIsOpen(false);
+      setNewValue("");
+      setIsFree(false);
+    } catch (error) {
+      toast.error("Gagal mengirim saran.", { id: toastId });
+    }
+  };
+
+  if (status !== "authenticated") return null;
+
+  return (
+    <>
+      <Button
+        size="sm"
+        variant="light"
+        onClick={() => setIsOpen(true)}
+        className="ml-2 text-xs"
+      >
+        Sarankan Perubahan
+      </Button>
+
+      <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
+        <ModalContent>
+          <ModalHeader>Sarankan Perubahan untuk {label}</ModalHeader>
+          <ModalBody>
+            <p className="text-sm mb-1">
+              Nilai saat ini:{" "}
+              <strong>{String(currentValue || "Tidak ada data")}</strong>
+            </p>
+
+            {fieldName === "ticketPrice" ? (
+              <div className="space-y-4">
+                <Input
+                  label={`Masukkan ${label} yang baru`}
+                  value={newValue}
+                  onValueChange={setNewValue}
+                  variant="flat"
+                  type="number"
+                  placeholder="Masukkan harga dalam angka (cth: 15000)"
+                  disabled={isFree}
+                />
+                <Checkbox isSelected={isFree} onValueChange={handleFreeChange}>
+                  Gratis
+                </Checkbox>
+              </div>
+            ) : (
+              <Input
+                label={`Masukkan ${label} yang baru`}
+                value={newValue}
+                onValueChange={setNewValue}
+                variant="flat"
+              />
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={() => setIsOpen(false)}>
+              Batal
+            </Button>
+            <Button color="primary" onClick={handleSubmit}>
+              Kirim Saran
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
