@@ -1,54 +1,72 @@
 "use client";
 
-import { useEffect, useState } from "react"; // Tambahkan useState
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { Button, Input, Textarea } from "@heroui/react";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
+import toast from "react-hot-toast";
+import SafeImage from "@/components/SafeImage";
 
 export default function EditCurugPage() {
   const router = useRouter();
   const params = useParams();
   const curugId = params.curugId as string;
 
-  // State baru untuk loading data form
   const [isFormLoading, setIsFormLoading] = useState(true);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm<FieldValues>({
-    defaultValues: {
-      name: "",
-      location: "",
-      description: "",
-      imageUrl: "",
-    },
-  });
+  const { register, handleSubmit, reset, watch } = useForm<FieldValues>();
+
+  // Tonton nilai imageUrl untuk pratinjau
+  const currentImageUrl = watch("imageUrl");
 
   useEffect(() => {
     if (curugId) {
-      setIsFormLoading(true); // Mulai loading
+      setIsFormLoading(true);
       axios
         .get(`/api/curug/${curugId}`)
         .then((response) => {
-          reset(response.data); // Isi form dengan data
+          reset(response.data);
         })
-        .finally(() => {
-          setIsFormLoading(false); // Selesai loading
-        });
+        .finally(() => setIsFormLoading(false));
     }
   }, [curugId, reset]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setIsSubmitting(true);
+    let imageUrl = data.imageUrl;
+
+    if (imageFile) {
+      const uploadToastId = toast.loading("Mengupload gambar baru...");
+      try {
+        const response = await fetch(`/api/upload?filename=${imageFile.name}`, {
+          method: "POST",
+          body: imageFile,
+        });
+        const newBlob = await response.json();
+        imageUrl = newBlob.url;
+        toast.success("Gambar berhasil diupload!", { id: uploadToastId });
+      } catch (error) {
+        console.error("Gagal mengupload gambar:", error);
+        toast.error("Gagal mengupload gambar.", { id: uploadToastId });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
+    const saveToastId = toast.loading("Memperbarui data curug...");
     try {
-      await axios.patch(`/api/curug/${curugId}`, data);
+      await axios.patch(`/api/curug/${curugId}`, { ...data, imageUrl });
+      toast.success("Data berhasil diperbarui!", { id: saveToastId });
       router.push("/dashboard");
       router.refresh();
     } catch (error) {
-      console.error("Gagal update data:", error);
+      console.error("Gagal memperbarui data:", error);
+      toast.error("Gagal memperbarui data.", { id: saveToastId });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -66,10 +84,52 @@ export default function EditCurugPage() {
             label="Deskripsi"
             variant="flat"
           />
-          <Input {...register("imageUrl")} label="URL Gambar" variant="flat" />
+
+          {/* Pratinjau Gambar Saat Ini */}
+          {currentImageUrl && (
+            <div>
+              <label className="block text-sm font-medium leading-6 text-gray-900">
+                Gambar Saat Ini
+              </label>
+              <div className="mt-2 relative w-full h-48">
+                <SafeImage
+                  src={currentImageUrl}
+                  alt="Pratinjau Gambar"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-md"
+                />
+              </div>
+            </div>
+          )}
+
+          <div>
+            <label
+              htmlFor="imageUpload"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Upload Gambar Baru (Opsional)
+            </label>
+            <div className="mt-2">
+              <input
+                id="imageUpload"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+            </div>
+          </div>
+
+          <Input
+            {...register("imageUrl")}
+            label="Atau ganti dengan URL Gambar manual"
+            variant="flat"
+          />
+
           <div className="flex gap-4 pt-4">
             <Button type="submit" color="primary" disabled={isSubmitting}>
-              Update
+              {isSubmitting ? "Memperbarui..." : "Update"}
             </Button>
             <Button
               type="button"
