@@ -2,39 +2,62 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { Prisma, Difficulty } from "@prisma/client";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { suggestionId: string } }
+  { params }: { params: Promise<{ suggestionId: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (session?.user?.role !== "ADMIN") {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { suggestionId } = params;
+  const { suggestionId } = await params;
   const body = await request.json();
   const { status, fieldName, newValue, curugId } = body;
 
   if (status === "APPROVED") {
-    let updateData: any = {};
+    const updateData: Prisma.CurugUpdateInput = {};
 
-    if (fieldName === "openingHours") {
-      updateData[fieldName] = JSON.parse(newValue);
-    } else if (fieldName === "ticketPrice") {
-      updateData[fieldName] = parseInt(newValue, 10);
-    } else {
-      updateData[fieldName] = newValue;
+    // Gunakan switch yang lengkap untuk memastikan type safety
+    switch (fieldName) {
+      case "ticketPrice":
+        updateData.ticketPrice = parseInt(newValue, 10);
+        break;
+      case "openingHours":
+        updateData.openingHours = JSON.parse(newValue);
+        break;
+      case "difficulty":
+        if (Object.values(Difficulty).includes(newValue as Difficulty)) {
+          updateData.difficulty = newValue as Difficulty;
+        }
+        break;
+      case "name":
+        updateData.name = newValue;
+        break;
+      case "location":
+        updateData.location = newValue;
+        break;
+      case "description":
+        updateData.description = newValue;
+        break;
+      case "imageUrl":
+        updateData.imageUrl = newValue;
+        break;
+      case "tags":
+        updateData.tags = newValue.split(",").map((tag: string) => tag.trim());
+        break;
     }
 
-    // Update data curugnya
-    await prisma.curug.update({
-      where: { id: curugId },
-      data: updateData,
-    });
+    if (Object.keys(updateData).length > 0) {
+      await prisma.curug.update({
+        where: { id: curugId },
+        data: updateData,
+      });
+    }
   }
 
-  // Update status sarannya
   const updatedSuggestion = await prisma.dataSuggestion.update({
     where: { id: suggestionId },
     data: { status },

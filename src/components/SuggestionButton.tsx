@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { normalize } from "@/lib/utils/formatters";
 
 type SuggestionButtonProps = {
   curugId: string;
@@ -86,7 +87,9 @@ export default function SuggestionButton({
           <ModalBody>
             <p className="text-sm mb-1">
               Nilai saat ini:{" "}
-              <strong>{String(currentValue || "Tidak ada data")}</strong>
+              <strong>
+                {normalize(String(currentValue || "Tidak ada data"))}
+              </strong>
             </p>
 
             {fieldName === "ticketPrice" ? (

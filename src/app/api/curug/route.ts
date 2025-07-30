@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { normalizeLocation } from "@/lib/utils/formatters";
+import { normalize } from "@/lib/utils/formatters";
 
 export async function GET() {
   const curug = await prisma.curug.findMany({
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   const price = ticketPrice ? parseInt(ticketPrice, 10) : null;
   const tagArray = tags ? tags.split(",").map((tag: string) => tag.trim()) : [];
 
-  location = normalizeLocation(location);
+  location = normalize(location);
 
   const newCurug = await prisma.curug.create({
     data: {

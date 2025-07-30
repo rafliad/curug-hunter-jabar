@@ -38,7 +38,7 @@ export default function SuggestionCard({
         { id: toastId }
       );
       setIsHandled(true);
-    } catch (error) {
+    } catch (_error) {
       toast.error("Gagal memproses saran.", { id: toastId });
     } finally {
       setIsLoading(false);
