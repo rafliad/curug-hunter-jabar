@@ -54,14 +54,25 @@ enum UserRole {
 // MODEL CURUG
 // =========================================
 model Curug {
-  id          String   @id @default(cuid())
-  name        String
-  description String   @db.Text
-  location    String   // Bisa diisi dengan koordinat atau alamat
-  imageUrl    String?  // URL gambar dari Vercel Blob
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  reviews     Review[] // Relasi: Satu Curug bisa punya banyak Review
+  id            String   @id @default(cuid())
+  name          String
+  description   String   @db.Text
+  location      String   // Bisa diisi dengan koordinat atau alamat
+  imageUrl      String?  // URL gambar dari Vercel Blob
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  reviews       Review[] // Relasi: Satu Curug bisa punya banyak Review
+  ticketPrice   Int?      // Harga tiket (opsional)
+  difficulty    Difficulty? // Tingkat kesulitan (opsional)
+  tags          String[]  // Tags seperti "Ramah Anak", dll.
+  openingHours  String?   // Jam buka (opsional, cth: "08:00 - 17:00")
+}
+
+// Tambahkan Enum baru ini di mana saja di dalam file schema
+enum Difficulty {
+  MUDAH
+  SEDANG
+  SULIT
 }
 
 
