@@ -61,7 +61,7 @@ export default function SuggestionModalOpeningHours({
         id: toastId,
       });
       onClose();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Gagal mengirim saran.", { id: toastId });
     }
   };
