@@ -17,9 +17,9 @@ export default function EditCurugPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { register, handleSubmit, reset, watch } = useForm<FieldValues>();
+  const { register, handleSubmit, reset, watch, getValues } =
+    useForm<FieldValues>();
 
-  // Tonton nilai imageUrl untuk pratinjau
   const currentImageUrl = watch("imageUrl");
 
   useEffect(() => {
@@ -36,8 +36,10 @@ export default function EditCurugPage() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsSubmitting(true);
-    let imageUrl = data.imageUrl;
+    const oldImageUrl = getValues("imageUrl");
+    let newImageUrl = data.imageUrl;
 
+    // Jika ada file baru yang diupload, proses upload terlebih dahulu
     if (imageFile) {
       const uploadToastId = toast.loading("Mengupload gambar baru...");
       try {
@@ -46,7 +48,7 @@ export default function EditCurugPage() {
           body: imageFile,
         });
         const newBlob = await response.json();
-        imageUrl = newBlob.url;
+        newImageUrl = newBlob.url;
         toast.success("Gambar berhasil diupload!", { id: uploadToastId });
       } catch (error) {
         console.error("Gagal mengupload gambar:", error);
@@ -58,8 +60,25 @@ export default function EditCurugPage() {
 
     const saveToastId = toast.loading("Memperbarui data curug...");
     try {
-      await axios.patch(`/api/curug/${curugId}`, { ...data, imageUrl });
+      // Update database dengan URL gambar yang baru
+      await axios.patch(`/api/curug/${curugId}`, {
+        ...data,
+        imageUrl: newImageUrl,
+      });
       toast.success("Data berhasil diperbarui!", { id: saveToastId });
+
+      // Jika gambar berubah dan gambar lama ada di Vercel Blob, hapus gambar lama
+      if (
+        oldImageUrl &&
+        oldImageUrl !== newImageUrl &&
+        oldImageUrl.includes("blob.vercel-storage.com")
+      ) {
+        console.log(`Menghapus gambar lama: ${oldImageUrl}`);
+        await fetch(`/api/upload?url=${encodeURIComponent(oldImageUrl)}`, {
+          method: "DELETE",
+        });
+      }
+
       router.push("/dashboard");
       router.refresh();
     } catch (error) {
@@ -77,6 +96,7 @@ export default function EditCurugPage() {
         <p>Loading form...</p>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* ... (input lainnya tetap sama) ... */}
           <Input {...register("name")} label="Nama Curug" variant="flat" />
           <Input {...register("location")} label="Lokasi" variant="flat" />
           <Textarea
@@ -85,7 +105,6 @@ export default function EditCurugPage() {
             variant="flat"
           />
 
-          {/* Pratinjau Gambar Saat Ini */}
           {currentImageUrl && (
             <div>
               <label className="block text-sm font-medium leading-6 text-gray-900">
