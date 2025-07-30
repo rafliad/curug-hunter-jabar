@@ -48,6 +48,7 @@ export default function AddCurugPage() {
       setIsUploading(false);
     }
   };
+  const days = ["senin", "selasa", "rabu", "kamis", "jumat", "sabtu", "minggu"];
 
   return (
     <div className="p-8 max-w-lg mx-auto">
@@ -74,11 +75,27 @@ export default function AddCurugPage() {
           type="number"
           variant="flat"
         />
-        <Input
-          {...register("openingHours")}
-          label="Jam Buka (cth: 08:00 - 17:00)"
-          variant="flat"
-        />
+        <fieldset className="border p-4 rounded-md">
+          <legend className="text-sm font-medium text-gray-900 px-1">
+            Jam Buka
+          </legend>
+          <div className="space-y-4 mt-2">
+            {days.map((day) => (
+              <Input
+                key={day}
+                {...register(`openingHours.${day}`)}
+                label={day.charAt(0).toUpperCase() + day.slice(1)}
+                placeholder="cth: 08:00 - 17:00 atau Tutup"
+                variant="flat"
+              />
+            ))}
+            <Input
+              {...register("openingHours.catatan")}
+              label="Catatan Tambahan"
+              variant="flat"
+            />
+          </div>
+        </fieldset>
         <Select
           {...register("difficulty")}
           label="Tingkat Kesulitan"
