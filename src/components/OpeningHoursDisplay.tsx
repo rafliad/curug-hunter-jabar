@@ -61,6 +61,11 @@ export default function OpeningHoursDisplay({
               </li>
             ))}
           </ul>
+          {hours?.catatan && (
+            <p className="text-xs text-gray-500 mt-3 pt-3 border-t">
+              <strong>Catatan:</strong> {hours.catatan}
+            </p>
+          )}
         </CardBody>
       </Card>
 
