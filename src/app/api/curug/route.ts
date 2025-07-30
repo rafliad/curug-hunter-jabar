@@ -13,8 +13,20 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { name, description, imageUrl } = body;
+  const {
+    name,
+    description,
+    imageUrl,
+    ticketPrice,
+    openingHours,
+    difficulty,
+    tags,
+  } = body;
   let { location } = body;
+
+  // Konversi dan bersihkan data sebelum disimpan
+  const price = ticketPrice ? parseInt(ticketPrice, 10) : null;
+  const tagArray = tags ? tags.split(",").map((tag: string) => tag.trim()) : [];
 
   location = normalizeLocation(location);
 
@@ -24,6 +36,10 @@ export async function POST(request: Request) {
       description,
       location,
       imageUrl,
+      ticketPrice: price,
+      openingHours,
+      difficulty,
+      tags: tagArray,
     },
   });
 

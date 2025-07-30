@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
-import { Button, Input, Textarea } from "@heroui/react";
+import { Button, Input, Textarea, Select, SelectItem } from "@heroui/react";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
 import toast from "react-hot-toast";
@@ -102,6 +102,31 @@ export default function EditCurugPage() {
           <Textarea
             {...register("description")}
             label="Deskripsi"
+            variant="flat"
+          />
+          <Input
+            {...register("ticketPrice")}
+            label="Harga Tiket (cth: 15000)"
+            type="number"
+            variant="flat"
+          />
+          <Input
+            {...register("openingHours")}
+            label="Jam Buka (cth: 08:00 - 17:00)"
+            variant="flat"
+          />
+          <Select
+            {...register("difficulty")}
+            label="Tingkat Kesulitan"
+            variant="flat"
+          >
+            <SelectItem key="MUDAH">Mudah</SelectItem>
+            <SelectItem key="SEDANG">Sedang</SelectItem>
+            <SelectItem key="SULIT">Sulit</SelectItem>
+          </Select>
+          <Input
+            {...register("tags")}
+            label="Tags (pisahkan dengan koma, cth: Ramah Anak, Spot Foto)"
             variant="flat"
           />
 
