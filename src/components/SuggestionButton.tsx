@@ -62,7 +62,7 @@ export default function SuggestionButton({
       setIsOpen(false);
       setNewValue("");
       setIsFree(false);
-    } catch (error) {
+    } catch (_error) {
       toast.error("Gagal mengirim saran.", { id: toastId });
     }
   };
