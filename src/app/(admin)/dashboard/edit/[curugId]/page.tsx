@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
-import { Button, Input, Textarea } from "@heroui/react";
+import { Button, Input, Textarea, Select, SelectItem } from "@heroui/react";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
 import toast from "react-hot-toast";
@@ -22,13 +22,19 @@ export default function EditCurugPage() {
 
   const currentImageUrl = watch("imageUrl");
 
+  const days = ["senin", "selasa", "rabu", "kamis", "jumat", "sabtu", "minggu"];
+
   useEffect(() => {
     if (curugId) {
       setIsFormLoading(true);
       axios
         .get(`/api/curug/${curugId}`)
         .then((response) => {
-          reset(response.data);
+          const data = response.data;
+          if (data.tags && Array.isArray(data.tags)) {
+            data.tags = data.tags.join(", ");
+          }
+          reset(data);
         })
         .finally(() => setIsFormLoading(false));
     }
@@ -102,6 +108,47 @@ export default function EditCurugPage() {
           <Textarea
             {...register("description")}
             label="Deskripsi"
+            variant="flat"
+          />
+          <Input
+            {...register("ticketPrice")}
+            label="Harga Tiket (cth: 15000)"
+            type="number"
+            variant="flat"
+          />
+          <fieldset className="border p-4 rounded-md">
+            <legend className="text-sm font-medium text-gray-900 px-1">
+              Jam Buka
+            </legend>
+            <div className="space-y-4 mt-2">
+              {days.map((day) => (
+                <Input
+                  key={day}
+                  {...register(`openingHours.${day}`)}
+                  label={day.charAt(0).toUpperCase() + day.slice(1)}
+                  placeholder="cth: 08:00 - 17:00 atau Tutup"
+                  variant="flat"
+                />
+              ))}
+              <Input
+                {...register("openingHours.catatan")}
+                label="Catatan Tambahan"
+                variant="flat"
+              />
+            </div>
+          </fieldset>
+          <Select
+            {...register("difficulty")}
+            label="Tingkat Kesulitan"
+            variant="flat"
+          >
+            <SelectItem key="MUDAH">Mudah</SelectItem>
+            <SelectItem key="SEDANG">Sedang</SelectItem>
+            <SelectItem key="SULIT">Sulit</SelectItem>
+          </Select>
+          <Input
+            {...register("tags")}
+            label="Tags (pisahkan dengan koma, cth: Ramah Anak, Spot Foto)"
             variant="flat"
           />
 
