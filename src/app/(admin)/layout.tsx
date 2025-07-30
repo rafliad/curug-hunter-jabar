@@ -1,22 +1,38 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
-// Komponen ini akan melindungi semua halaman di dalam folder (admin)
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // 1. Ambil sesi di sisi server
   const session = await getServerSession(authOptions);
-
-  // 2. Cek jika tidak ada sesi ATAU role pengguna bukan ADMIN
   if (!session?.user || session.user.role !== "ADMIN") {
-    // Jika tidak valid, lempar ke halaman utama
     redirect("/");
   }
 
-  // 3. Jika valid, tampilkan halaman yang diminta
-  return <>{children}</>;
+  return (
+    <div className="flex min-h-screen">
+      <aside className="w-64 bg-slate-900 text-white p-6 shrink-0">
+        <h2 className="text-lg font-semibold mb-4">Admin Menu</h2>
+        <nav className="space-y-2">
+          <Link
+            href="/dashboard"
+            className="block py-2 px-4 rounded hover:bg-slate-700 transition-colors"
+          >
+            Data Curug
+          </Link>
+          <Link
+            href="/dashboard/suggestions"
+            className="block py-2 px-4 rounded hover:bg-slate-700 transition-colors"
+          >
+            Saran Pengguna
+          </Link>
+        </nav>
+      </aside>
+      <main className="flex-1 bg-gray-100 overflow-y-auto p-6">{children}</main>
+    </div>
+  );
 }
