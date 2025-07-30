@@ -65,7 +65,7 @@ model Curug {
   ticketPrice   Int?      // Harga tiket (opsional)
   difficulty    Difficulty? // Tingkat kesulitan (opsional)
   tags          String[]  // Tags seperti "Ramah Anak", dll.
-  openingHours  String?   // Jam buka (opsional, cth: "08:00 - 17:00")
+  openingHours  Json?   // Jam buka (opsional, cth: "08:00 - 17:00")
 }
 
 // Tambahkan Enum baru ini di mana saja di dalam file schema
