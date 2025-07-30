@@ -10,6 +10,8 @@ import {
   ModalHeader,
   Input,
   Checkbox,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -36,16 +38,12 @@ export default function SuggestionButton({
 
   const handleFreeChange = (checked: boolean) => {
     setIsFree(checked);
-    if (checked) {
-      setNewValue("0");
-    } else {
-      setNewValue("");
-    }
+    setNewValue(checked ? "0" : "");
   };
 
   const handleSubmit = async () => {
     if (!isFree && !newValue.trim()) {
-      toast.error("Silakan masukkan nilai baru atau tandai sebagai gratis.");
+      toast.error("Silakan masukkan nilai baru.");
       return;
     }
 
@@ -70,6 +68,52 @@ export default function SuggestionButton({
 
   if (status !== "authenticated") return null;
 
+  // Fungsi untuk merender input yang sesuai
+  const renderInput = () => {
+    switch (fieldName) {
+      case "ticketPrice":
+        return (
+          <div className="space-y-4">
+            <Input
+              label={`Masukkan ${label} yang baru`}
+              value={newValue}
+              onValueChange={setNewValue}
+              variant="flat"
+              type="number"
+              placeholder="Masukkan harga dalam angka"
+              disabled={isFree}
+            />
+            <Checkbox isSelected={isFree} onValueChange={handleFreeChange}>
+              Gratis
+            </Checkbox>
+          </div>
+        );
+      case "difficulty":
+        return (
+          <Select
+            label="Pilih Tingkat Kesulitan Baru"
+            selectedKeys={[newValue]}
+            onSelectionChange={(keys) =>
+              setNewValue(Array.from(keys)[0] as string)
+            }
+          >
+            <SelectItem key="MUDAH">Mudah</SelectItem>
+            <SelectItem key="SEDANG">Sedang</SelectItem>
+            <SelectItem key="SULIT">Sulit</SelectItem>
+          </Select>
+        );
+      default:
+        return (
+          <Input
+            label={`Masukkan ${label} yang baru`}
+            value={newValue}
+            onValueChange={setNewValue}
+            variant="flat"
+          />
+        );
+    }
+  };
+
   return (
     <>
       <Button
@@ -91,30 +135,7 @@ export default function SuggestionButton({
                 {normalize(String(currentValue || "Tidak ada data"))}
               </strong>
             </p>
-
-            {fieldName === "ticketPrice" ? (
-              <div className="space-y-4">
-                <Input
-                  label={`Masukkan ${label} yang baru`}
-                  value={newValue}
-                  onValueChange={setNewValue}
-                  variant="flat"
-                  type="number"
-                  placeholder="Masukkan harga dalam angka (cth: 15000)"
-                  disabled={isFree}
-                />
-                <Checkbox isSelected={isFree} onValueChange={handleFreeChange}>
-                  Gratis
-                </Checkbox>
-              </div>
-            ) : (
-              <Input
-                label={`Masukkan ${label} yang baru`}
-                value={newValue}
-                onValueChange={setNewValue}
-                variant="flat"
-              />
-            )}
+            {renderInput()}
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={() => setIsOpen(false)}>
