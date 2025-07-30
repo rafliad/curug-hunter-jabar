@@ -101,7 +101,7 @@ export default function CurugDetailClient({
                 </div>
               </CardBody>
             </Card>
-            <OpeningHoursDisplay hours={openingHours} />
+            <OpeningHoursDisplay hours={openingHours} curugId={curug.id} />
             {curug.tags.length > 0 && (
               <Card>
                 <CardBody>
