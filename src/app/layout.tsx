@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers"; // Import providers
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,8 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           <main>{children}</main>
+          <Footer />
         </Providers>{" "}
-        {/* Bungkus children dengan Providers */}
       </body>
     </html>
   );
