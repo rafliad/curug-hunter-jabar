@@ -16,8 +16,9 @@ export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
   const { status } = useSession();
   const { register, handleSubmit, reset } = useForm<FieldValues>();
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
-  const [rateValue, setRateValue] = useState("0");
+  const [rateValue, setRateValue] = useState("");
   const isInvalid = useMemo(() => {
+    if (rateValue == "") return false;
     const num = Number(rateValue);
     return !(num >= 1 && num <= 5);
   }, [rateValue]);

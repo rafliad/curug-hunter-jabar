@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -41,6 +41,11 @@ export default function ReviewItem({ review }: ReviewItemProps) {
   const [editedContent, setEditedContent] = useState(review.content);
   const [editedRating, setEditedRating] = useState(review.rating.toString());
   const [validationError, setValidationError] = useState<string | null>(null);
+
+  const isInvalid = useMemo(() => {
+    const num = Number(editedRating);
+    return !(num >= 1 && num <= 5);
+  }, [editedRating]);
 
   // State baru untuk modal delete
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -129,6 +134,9 @@ export default function ReviewItem({ review }: ReviewItemProps) {
               type="number"
               variant="flat"
               label="Rating (1-5)"
+              color={isInvalid ? "danger" : "default"}
+              isInvalid={isInvalid}
+              errorMessage="Tolong isi angka antara 1 sampai 5"
             />
             {validationError && (
               <p className="text-sm text-red-500">{validationError}</p>
