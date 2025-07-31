@@ -55,7 +55,7 @@ export default function CurugDetailClient({
             {/* Kolom Kiri: Deskripsi & Ulasan */}
             <div className="lg:col-span-2 space-y-8">
               <Card>
-                <CardBody>
+                <CardBody className="bg-blue-50">
                   <h2 className="text-2xl font-semibold mb-4">Deskripsi</h2>
                   <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
                     {curug.description}
@@ -84,7 +84,7 @@ export default function CurugDetailClient({
             {/* Kolom Kanan (Sidebar): Info Penting */}
             <aside className="space-y-6 lg:sticky lg:top-24 self-start">
               <Card>
-                <CardBody>
+                <CardBody className="bg-blue-50">
                   <h3 className="text-lg font-semibold mb-3">Info Penting</h3>
                   <div className="space-y-2">
                     <p>
@@ -118,7 +118,7 @@ export default function CurugDetailClient({
               <OpeningHoursDisplay hours={openingHours} curugId={curug.id} />
               {curug.tags.length > 0 && (
                 <Card>
-                  <CardBody>
+                  <CardBody className="bg-blue-50">
                     <h3 className="text-lg font-semibold mb-3">Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       {curug.tags.map((tag) => (

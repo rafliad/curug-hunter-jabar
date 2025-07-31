@@ -85,7 +85,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
 
   return (
     <>
-      <div className="bg-white p-4 rounded-lg shadow">
+      <div className="bg-blue-50 p-4 rounded-lg shadow">
         {/* ... (bagian info penulis tetap sama) ... */}
         <div className="flex items-center mb-2">
           <div className="w-10 h-10 rounded-full bg-gray-200 mr-3 flex items-center justify-center overflow-hidden">

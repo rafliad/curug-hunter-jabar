@@ -36,7 +36,7 @@ export default function OpeningHoursDisplay({
   return (
     <>
       <Card>
-        <CardBody>
+        <CardBody className="bg-blue-50">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-lg font-semibold">Jam Operasional</h3>
             {status === "authenticated" && (

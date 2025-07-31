@@ -33,8 +33,10 @@ export default function ProfileClient({
           />
         </div>
         <div>
-          <h1 className="text-3xl font-bold">{session.user.name}</h1>
-          <p className="text-lg text-gray-500">{session.user.email}</p>
+          <h1 className="text-3xl font-bold text-blue-50">
+            {session.user.name}
+          </h1>
+          <p className="text-lg text-gray-400">{session.user.email}</p>
         </div>
       </div>
 
@@ -57,13 +59,13 @@ export default function ProfileClient({
       )}
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="text-2xl font-bold mb-4 text-blue-50">
           Ulasan Anda ({userReviews.length})
         </h2>
         <div className="space-y-4">
           {userReviews.length > 0 ? (
             userReviews.map((review) => (
-              <div key={review.id} className="bg-white p-4 rounded-lg shadow">
+              <div key={review.id} className="bg-blue-50 p-4 rounded-lg shadow">
                 <p className="text-sm text-gray-500 mb-2">
                   Ulasan untuk:
                   <Link

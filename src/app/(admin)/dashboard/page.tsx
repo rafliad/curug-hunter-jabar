@@ -82,7 +82,7 @@ export default function DashboardPage() {
             Tambah Curug Baru
           </Button>
         </div>
-        <div className="bg-white shadow rounded-lg">
+        <div className="bg-blue-50 shadow rounded-lg">
           <ul role="list" className="divide-y divide-gray-200">
             {curugList.map((curug) => (
               <li

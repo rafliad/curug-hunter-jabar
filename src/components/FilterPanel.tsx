@@ -17,7 +17,7 @@ export default function FilterPanel() {
   ].sort();
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-lg sticky top-8">
+    <div className="p-4 bg-blue-50 rounded-lg shadow-lg sticky top-8">
       <h3 className="text-lg font-semibold mb-4 border-b pb-2">
         Filter Berdasarkan Lokasi
       </h3>
