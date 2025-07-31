@@ -5,7 +5,6 @@ import { Card, CardBody, CardFooter, Button, Chip } from "@heroui/react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-// Definisikan tipe data yang lebih lengkap
 type Suggestion = {
   id: string;
   fieldName: string;
@@ -46,7 +45,7 @@ export default function SuggestionCard({
   };
 
   if (isHandled) {
-    return null; // Sembunyikan kartu setelah ditangani
+    return null;
   }
 
   return (

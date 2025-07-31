@@ -6,7 +6,7 @@ import SafeImage from "@/components/SafeImage";
 import CreateReviewForm from "@/components/CreateReviewForm";
 import ReviewItem from "@/components/ReviewItem";
 import OpeningHoursDisplay from "@/components/OpeningHoursDisplay";
-import SuggestionButton from "./SuggestionButton"; // Import SuggestionButton
+import SuggestionButton from "./SuggestionButton";
 
 type ReviewWithAuthor = Review & { author: User };
 type CurugWithReviews = Curug & { reviews: ReviewWithAuthor[] };
@@ -52,7 +52,6 @@ export default function CurugDetailClient({
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Kolom Kiri: Deskripsi & Ulasan */}
             <div className="lg:col-span-2 space-y-8">
               <Card>
                 <CardBody className="bg-blue-50">
@@ -81,7 +80,6 @@ export default function CurugDetailClient({
               </div>
             </div>
 
-            {/* Kolom Kanan (Sidebar): Info Penting */}
             <aside className="space-y-6 lg:sticky lg:top-24 self-start">
               <Card>
                 <CardBody className="bg-blue-50">

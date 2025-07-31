@@ -25,13 +25,11 @@ export async function POST(request: Request) {
       data: { emailVerified: new Date() },
     });
 
-    // Update semua ulasan 'PENDING' dari pengguna ini menjadi 'PUBLISHED'
     await prisma.review.updateMany({
       where: { authorId: user.id, status: "PENDING" },
       data: { status: "PUBLISHED" },
     });
 
-    // Hapus token yang sudah digunakan
     await prisma.verificationToken.delete({
       where: { token },
     });

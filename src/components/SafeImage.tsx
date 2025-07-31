@@ -3,14 +3,12 @@
 import { useState } from "react";
 import Image, { ImageProps } from "next/image";
 
-// Fungsi untuk validasi URL
 const isValidUrl = (url: string | null | undefined): boolean => {
   if (!url) return false;
   try {
     new URL(url);
     return true;
   } catch (_e) {
-    // Juga anggap path internal (seperti /placeholder.png) valid
     return url.startsWith("/");
   }
 };
@@ -18,7 +16,6 @@ const isValidUrl = (url: string | null | undefined): boolean => {
 export default function SafeImage(props: ImageProps) {
   const [error, setError] = useState(false);
 
-  // 1. Cek validitas URL di awal
   if (!isValidUrl(props.src as string) || error) {
     return (
       <div className="w-full h-full bg-gray-200 flex items-center justify-center rounded-lg">
@@ -32,7 +29,6 @@ export default function SafeImage(props: ImageProps) {
   return (
     <Image
       {...props}
-      // 2. onError tetap ada sebagai lapisan keamanan kedua (untuk 404, dll)
       onError={() => {
         setError(true);
       }}

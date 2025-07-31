@@ -6,7 +6,6 @@ import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { Button, Card, CardBody } from "@heroui/react";
 
-// Definisikan tipe untuk data yang kita terima
 type ReviewWithCurug = Review & { curug: Curug };
 
 type ProfileClientProps = {
@@ -18,7 +17,7 @@ export default function ProfileClient({
   session,
   userReviews,
 }: ProfileClientProps) {
-  if (!session.user) return null; // Pengaman tambahan
+  if (!session.user) return null;
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-8">

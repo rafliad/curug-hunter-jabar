@@ -45,7 +45,6 @@ export default function EditCurugPage() {
     const oldImageUrl = getValues("imageUrl");
     let newImageUrl = data.imageUrl;
 
-    // Jika ada file baru yang diupload, proses upload terlebih dahulu
     if (imageFile) {
       const uploadToastId = toast.loading("Mengupload gambar baru...");
       try {
@@ -66,20 +65,17 @@ export default function EditCurugPage() {
 
     const saveToastId = toast.loading("Memperbarui data curug...");
     try {
-      // Update database dengan URL gambar yang baru
       await axios.patch(`/api/curug/${curugId}`, {
         ...data,
         imageUrl: newImageUrl,
       });
       toast.success("Data berhasil diperbarui!", { id: saveToastId });
 
-      // Jika gambar berubah dan gambar lama ada di Vercel Blob, hapus gambar lama
       if (
         oldImageUrl &&
         oldImageUrl !== newImageUrl &&
         oldImageUrl.includes("blob.vercel-storage.com")
       ) {
-        console.log(`Menghapus gambar lama: ${oldImageUrl}`);
         await fetch(`/api/upload?url=${encodeURIComponent(oldImageUrl)}`, {
           method: "DELETE",
         });
@@ -102,7 +98,6 @@ export default function EditCurugPage() {
         <p>Loading form...</p>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* ... (input lainnya tetap sama) ... */}
           <Input {...register("name")} label="Nama Curug" variant="bordered" />
           <Input {...register("location")} label="Lokasi" variant="bordered" />
           <Textarea

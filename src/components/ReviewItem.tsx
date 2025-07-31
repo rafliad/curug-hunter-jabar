@@ -17,7 +17,6 @@ import {
 import SafeImage from "./SafeImage";
 import toast from "react-hot-toast";
 
-// Definisikan tipe data yang lebih lengkap
 type ReviewWithAuthor = {
   id: string;
   content: string;
@@ -47,7 +46,6 @@ export default function ReviewItem({ review }: ReviewItemProps) {
     return !(num >= 1 && num <= 5);
   }, [editedRating]);
 
-  // State baru untuk modal delete
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const isOwner = session?.user?.id === review.author.id;
@@ -91,7 +89,6 @@ export default function ReviewItem({ review }: ReviewItemProps) {
   return (
     <>
       <div className="bg-blue-50 p-4 rounded-lg shadow">
-        {/* ... (bagian info penulis tetap sama) ... */}
         <div className="flex items-center mb-2">
           <div className="w-10 h-10 rounded-full bg-gray-200 mr-3 flex items-center justify-center overflow-hidden">
             {review.author.image ? (
@@ -178,7 +175,6 @@ export default function ReviewItem({ review }: ReviewItemProps) {
         )}
       </div>
 
-      {/* Modal Konfirmasi Delete */}
       <Modal isOpen={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <ModalContent>
           <ModalHeader>Konfirmasi Penghapusan</ModalHeader>

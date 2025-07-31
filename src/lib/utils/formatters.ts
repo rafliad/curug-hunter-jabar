@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 
-// Normalizing every location of 'curug' added
 export const normalize = (location: string): string => {
   if (!location) return "";
   return location

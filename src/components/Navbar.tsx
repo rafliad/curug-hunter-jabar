@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@heroui/react";
-import SafeImage from "./SafeImage"; // Import komponen SafeImage
+import SafeImage from "./SafeImage";
 
 export default function Navbar() {
   const { data: session, status } = useSession();

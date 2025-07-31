@@ -8,8 +8,8 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      role: UserRole; // Tambahkan properti role di sini
-    } & DefaultSession["user"]; // Gabungkan dengan tipe user bawaan
+      role: UserRole;
+    } & DefaultSession["user"];
   }
 
   /**

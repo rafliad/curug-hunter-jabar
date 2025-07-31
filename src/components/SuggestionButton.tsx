@@ -45,7 +45,6 @@ export default function SuggestionButton({
       return;
     }
 
-    // Kalau angka valid tapi negatif
     if (!isNaN(num) && num < 0) {
       setIsNegative(true);
     } else {
@@ -86,7 +85,6 @@ export default function SuggestionButton({
 
   if (status !== "authenticated") return null;
 
-  // Fungsi untuk merender input yang sesuai
   const renderInput = () => {
     switch (fieldName) {
       case "ticketPrice":

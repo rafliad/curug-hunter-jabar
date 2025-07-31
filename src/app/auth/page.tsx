@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 type Variant = "LOGIN" | "REGISTER";
 
 export default function AuthPage() {
-  const router = useRouter(); // <-- Tambahkan baris ini
+  const router = useRouter();
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
 

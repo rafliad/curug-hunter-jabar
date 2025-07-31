@@ -9,7 +9,7 @@ type OpeningHours = { [key: string]: string };
 
 type OpeningHoursDisplayProps = {
   hours: OpeningHours | null | undefined;
-  curugId: string; // Tambahkan prop curugId
+  curugId: string;
 };
 
 export default function OpeningHoursDisplay({

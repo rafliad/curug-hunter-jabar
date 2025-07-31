@@ -22,12 +22,10 @@ export default function DashboardPage() {
   const [curugList, setCurugList] = useState<Curug[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // State baru untuk mengontrol modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCurugId, setSelectedCurugId] = useState<string | null>(null);
 
   const fetchCurugData = async () => {
-    // ... (fungsi ini tetap sama)
     try {
       const response = await axios.get("/api/curug");
       setCurugList(response.data);
@@ -42,29 +40,26 @@ export default function DashboardPage() {
     fetchCurugData();
   }, []);
 
-  // Fungsi untuk membuka modal dan menyimpan ID curug yang dipilih
   const openDeleteModal = (curugId: string) => {
     setSelectedCurugId(curugId);
     setIsModalOpen(true);
   };
 
-  // Fungsi untuk menutup modal
   const closeDeleteModal = () => {
     setSelectedCurugId(null);
     setIsModalOpen(false);
   };
 
-  // Fungsi delete yang sebenarnya, sekarang dipanggil dari dalam modal
   const handleDelete = async () => {
     if (!selectedCurugId) return;
 
     try {
       await axios.delete(`/api/curug/${selectedCurugId}`);
-      fetchCurugData(); // Refresh data setelah berhasil menghapus
+      fetchCurugData();
     } catch (error) {
       console.error("Gagal menghapus data:", error);
     } finally {
-      closeDeleteModal(); // Tutup modal setelah selesai
+      closeDeleteModal();
     }
   };
 
@@ -75,7 +70,6 @@ export default function DashboardPage() {
   return (
     <>
       <div className="p-8">
-        {/* ... (Bagian judul dan tombol Tambah tetap sama) ... */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Admin Dashboard - Data Curug</h1>
           <Button color="primary" as={Link} href="/dashboard/add">
@@ -106,7 +100,6 @@ export default function DashboardPage() {
                   >
                     Edit
                   </Button>
-                  {/* Tombol Delete sekarang memanggil fungsi untuk membuka modal */}
                   <Button
                     onClick={() => openDeleteModal(curug.id)}
                     color="danger"
@@ -121,7 +114,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Komponen Modal untuk Konfirmasi Delete */}
       <Modal isOpen={isModalOpen} onOpenChange={closeDeleteModal}>
         <ModalContent>
           <ModalHeader>Konfirmasi Penghapusan</ModalHeader>

@@ -11,7 +11,6 @@ export default function FilterPanel() {
     (state: RootState) => state.curug
   );
 
-  // Ambil daftar lokasi unik dari data curug
   const locations = [
     ...new Set(allCurug.map((curug) => curug.location)),
   ].sort();

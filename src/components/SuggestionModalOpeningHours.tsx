@@ -33,7 +33,6 @@ export default function SuggestionModalOpeningHours({
     defaultValues: currentHours || {},
   });
 
-  // Reset form setiap kali modal dibuka dengan data terbaru
   useEffect(() => {
     if (isOpen) {
       reset(currentHours || {});
@@ -44,18 +43,12 @@ export default function SuggestionModalOpeningHours({
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Mengirim saran...");
-    console.log("Mengirim dari SuggestionModalOpeningHours:", {
-      curugId,
-      fieldName: "openingHours",
-      oldValue: JSON.stringify(currentHours || {}),
-      newValue: JSON.stringify(data),
-    });
     try {
       await axios.post("/api/suggestions", {
         curugId,
-        fieldName: "openingHours", // Field name sekarang adalah 'openingHours'
-        oldValue: JSON.stringify(currentHours || {}), // Kirim data lama sebagai string JSON
-        newValue: JSON.stringify(data), // Kirim data baru sebagai string JSON
+        fieldName: "openingHours",
+        oldValue: JSON.stringify(currentHours || {}),
+        newValue: JSON.stringify(data),
       });
       toast.success("Terima kasih! Saran Anda telah terkirim.", {
         id: toastId,
