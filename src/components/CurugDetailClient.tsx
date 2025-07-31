@@ -6,6 +6,7 @@ import SafeImage from "@/components/SafeImage";
 import CreateReviewForm from "@/components/CreateReviewForm";
 import ReviewItem from "@/components/ReviewItem";
 import OpeningHoursDisplay from "@/components/OpeningHoursDisplay";
+import SuggestionButton from "./SuggestionButton"; // Import SuggestionButton
 
 type ReviewWithAuthor = Review & { author: User };
 type CurugWithReviews = Curug & { reviews: ReviewWithAuthor[] };
@@ -91,6 +92,12 @@ export default function CurugDetailClient({
                       {curug.ticketPrice
                         ? `Rp ${curug.ticketPrice.toLocaleString("id-ID")}`
                         : "Gratis / Tidak ada data"}
+                      <SuggestionButton
+                        curugId={curug.id}
+                        fieldName="ticketPrice"
+                        currentValue={curug.ticketPrice}
+                        label="Harga Tiket"
+                      />
                     </p>
                     <p>
                       <strong>Tingkat Kesulitan:</strong>{" "}
@@ -98,6 +105,12 @@ export default function CurugDetailClient({
                         ? curug.difficulty.charAt(0) +
                           curug.difficulty.slice(1).toLowerCase()
                         : "Tidak ada data"}
+                      <SuggestionButton
+                        curugId={curug.id}
+                        fieldName="difficulty"
+                        currentValue={curug.difficulty}
+                        label="Tingkat Kesulitan"
+                      />
                     </p>
                   </div>
                 </CardBody>
