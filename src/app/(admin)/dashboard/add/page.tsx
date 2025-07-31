@@ -55,25 +55,28 @@ export default function AddCurugPage() {
       <h1 className="text-2xl font-bold mb-6">Tambah Data Curug Baru</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <Input
+          isRequired
           {...register("name", { required: true })}
           label="Nama Curug"
-          variant="flat"
+          variant="bordered"
         />
         <Input
+          isRequired
           {...register("location", { required: true })}
           label="Lokasi"
-          variant="flat"
+          variant="bordered"
         />
         <Textarea
+          isRequired
           {...register("description", { required: true })}
           label="Deskripsi"
-          variant="flat"
+          variant="bordered"
         />
         <Input
           {...register("ticketPrice")}
           label="Harga Tiket (cth: 15000)"
           type="number"
-          variant="flat"
+          variant="bordered"
         />
         <fieldset className="border p-4 rounded-md">
           <legend className="text-sm font-medium text-gray-900 px-1">
@@ -86,20 +89,21 @@ export default function AddCurugPage() {
                 {...register(`openingHours.${day}`)}
                 label={day.charAt(0).toUpperCase() + day.slice(1)}
                 placeholder="cth: 08:00 - 17:00 atau Tutup"
-                variant="flat"
+                variant="bordered"
               />
             ))}
             <Input
               {...register("openingHours.catatan")}
               label="Catatan Tambahan"
-              variant="flat"
+              variant="bordered"
             />
           </div>
         </fieldset>
         <Select
-          {...register("difficulty")}
+          isRequired
+          {...register("difficulty", { required: true })}
           label="Tingkat Kesulitan"
-          variant="flat"
+          variant="bordered"
         >
           <SelectItem key="MUDAH">Mudah</SelectItem>
           <SelectItem key="SEDANG">Sedang</SelectItem>
@@ -108,7 +112,7 @@ export default function AddCurugPage() {
         <Input
           {...register("tags")}
           label="Tags (pisahkan dengan koma, cth: Ramah Anak, Spot Foto)"
-          variant="flat"
+          variant="bordered"
         />
 
         <div>
@@ -138,7 +142,7 @@ export default function AddCurugPage() {
         <Input
           {...register("imageUrl")}
           label="Masukkan URL Gambar manual"
-          variant="flat"
+          variant="bordered"
         />
 
         <div className="flex gap-4 pt-4">

@@ -77,25 +77,31 @@ export default function AuthPage() {
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {variant === "REGISTER" && (
               <Input
+                isRequired
                 className="text-gray-500 hover:text-gray-700"
                 {...register("name", { required: true })}
                 placeholder="Name"
                 disabled={isLoading}
+                variant="bordered"
               />
             )}
             <Input
+              isRequired
               className="text-gray-500 hover:text-gray-700"
               {...register("email", { required: true })}
               placeholder="Email address"
               type="email"
               disabled={isLoading}
+              variant="bordered"
             />
             <Input
+              isRequired
               className="text-gray-500 hover:text-gray-700"
               {...register("password", { required: true })}
               placeholder="Password"
               type="password"
               disabled={isLoading}
+              variant="bordered"
             />
             <div>
               <Button

@@ -78,13 +78,13 @@ export default function SuggestionModalOpeningHours({
                   key={day}
                   {...register(day)}
                   label={day.charAt(0).toUpperCase() + day.slice(1)}
-                  variant="flat"
+                  variant="bordered"
                 />
               ))}
               <Input
                 {...register("catatan")}
                 label="Catatan Tambahan"
-                variant="flat"
+                variant="bordered"
               />
             </div>
           </ModalBody>

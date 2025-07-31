@@ -72,14 +72,14 @@ export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
           isRequired
           {...register("content", { required: true })}
           label="Ulasan Anda"
-          variant="flat"
+          variant="bordered"
         />
         <Input
           isRequired
           {...register("rating", { required: true, min: 1, max: 5 })}
           label="Rating (1-5)"
           type="number"
-          variant="flat"
+          variant="bordered"
           color={isInvalid ? "danger" : "default"}
           errorMessage="Tolong isi angka di antara 1 sampai 5"
           isInvalid={isInvalid}

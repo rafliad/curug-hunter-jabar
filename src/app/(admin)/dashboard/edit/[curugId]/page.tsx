@@ -103,18 +103,18 @@ export default function EditCurugPage() {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* ... (input lainnya tetap sama) ... */}
-          <Input {...register("name")} label="Nama Curug" variant="flat" />
-          <Input {...register("location")} label="Lokasi" variant="flat" />
+          <Input {...register("name")} label="Nama Curug" variant="bordered" />
+          <Input {...register("location")} label="Lokasi" variant="bordered" />
           <Textarea
             {...register("description")}
             label="Deskripsi"
-            variant="flat"
+            variant="bordered"
           />
           <Input
             {...register("ticketPrice")}
             label="Harga Tiket (cth: 15000)"
             type="number"
-            variant="flat"
+            variant="bordered"
           />
           <fieldset className="border p-4 rounded-md">
             <legend className="text-sm font-medium text-gray-900 px-1">
@@ -127,20 +127,20 @@ export default function EditCurugPage() {
                   {...register(`openingHours.${day}`)}
                   label={day.charAt(0).toUpperCase() + day.slice(1)}
                   placeholder="cth: 08:00 - 17:00 atau Tutup"
-                  variant="flat"
+                  variant="bordered"
                 />
               ))}
               <Input
                 {...register("openingHours.catatan")}
                 label="Catatan Tambahan"
-                variant="flat"
+                variant="bordered"
               />
             </div>
           </fieldset>
           <Select
             {...register("difficulty")}
             label="Tingkat Kesulitan"
-            variant="flat"
+            variant="bordered"
           >
             <SelectItem key="MUDAH">Mudah</SelectItem>
             <SelectItem key="SEDANG">Sedang</SelectItem>
@@ -149,7 +149,7 @@ export default function EditCurugPage() {
           <Input
             {...register("tags")}
             label="Tags (pisahkan dengan koma, cth: Ramah Anak, Spot Foto)"
-            variant="flat"
+            variant="bordered"
           />
 
           {currentImageUrl && (
@@ -190,7 +190,7 @@ export default function EditCurugPage() {
           <Input
             {...register("imageUrl")}
             label="Atau ganti dengan URL Gambar manual"
-            variant="flat"
+            variant="bordered"
           />
 
           <div className="flex gap-4 pt-4">

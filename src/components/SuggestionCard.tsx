@@ -64,11 +64,11 @@ export default function SuggestionCard({
             {suggestion.fieldName.replace(/([A-Z])/g, " $1")}
           </p>
           <div className="flex items-center gap-4 mt-2">
-            <Chip color="danger" variant="flat" size="sm">
+            <Chip color="danger" variant="bordered" size="sm">
               Lama: {suggestion.oldValue || "Kosong"}
             </Chip>
             <span className="font-bold">→</span>
-            <Chip color="success" variant="flat" size="sm">
+            <Chip color="success" variant="bordered" size="sm">
               Baru: {suggestion.newValue}
             </Chip>
           </div>

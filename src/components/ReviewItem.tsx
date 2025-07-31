@@ -125,14 +125,14 @@ export default function ReviewItem({ review }: ReviewItemProps) {
             <Textarea
               value={editedContent}
               onValueChange={setEditedContent}
-              variant="flat"
+              variant="bordered"
               label="Ulasan"
             />
             <Input
               value={editedRating}
               onValueChange={setEditedRating}
               type="number"
-              variant="flat"
+              variant="bordered"
               label="Rating (1-5)"
               color={isInvalid ? "danger" : "default"}
               isInvalid={isInvalid}

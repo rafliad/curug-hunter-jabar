@@ -34,7 +34,6 @@ export default function CurugBrowser({ initialCurug }: CurugBrowserProps) {
         <div className="mb-8">
           <Input
             placeholder="Cari nama curug..."
-            variant="flat"
             value={searchTerm}
             onChange={(e) => dispatch(searchCurug(e.target.value))}
           />
