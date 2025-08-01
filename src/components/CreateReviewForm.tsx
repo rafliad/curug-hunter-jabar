@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react"; // Import useState
+import { useState, useMemo } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { Button, Textarea, Input } from "@heroui/react";
 import axios from "axios";
@@ -16,6 +16,12 @@ export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
   const { status } = useSession();
   const { register, handleSubmit, reset } = useForm<FieldValues>();
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [rateValue, setRateValue] = useState("");
+  const isInvalid = useMemo(() => {
+    if (rateValue == "") return false;
+    const num = Number(rateValue);
+    return !(num >= 1 && num <= 5);
+  }, [rateValue]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -66,14 +72,19 @@ export default function CreateReviewForm({ curugId }: CreateReviewFormProps) {
           isRequired
           {...register("content", { required: true })}
           label="Ulasan Anda"
-          variant="flat"
+          variant="bordered"
         />
         <Input
           isRequired
           {...register("rating", { required: true, min: 1, max: 5 })}
           label="Rating (1-5)"
           type="number"
-          variant="flat"
+          variant="bordered"
+          color={isInvalid ? "danger" : "default"}
+          errorMessage="Tolong isi angka di antara 1 sampai 5"
+          isInvalid={isInvalid}
+          value={rateValue}
+          onValueChange={setRateValue}
         />
         <Button type="submit" color="primary">
           Kirim Ulasan

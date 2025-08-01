@@ -24,7 +24,6 @@ export async function POST(request: Request) {
   } = body;
   let { location } = body;
 
-  // Konversi dan bersihkan data sebelum disimpan
   const price = ticketPrice ? parseInt(ticketPrice, 10) : null;
   const tagArray = tags ? tags.split(",").map((tag: string) => tag.trim()) : [];
 

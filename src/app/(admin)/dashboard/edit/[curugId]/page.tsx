@@ -45,7 +45,6 @@ export default function EditCurugPage() {
     const oldImageUrl = getValues("imageUrl");
     let newImageUrl = data.imageUrl;
 
-    // Jika ada file baru yang diupload, proses upload terlebih dahulu
     if (imageFile) {
       const uploadToastId = toast.loading("Mengupload gambar baru...");
       try {
@@ -66,20 +65,17 @@ export default function EditCurugPage() {
 
     const saveToastId = toast.loading("Memperbarui data curug...");
     try {
-      // Update database dengan URL gambar yang baru
       await axios.patch(`/api/curug/${curugId}`, {
         ...data,
         imageUrl: newImageUrl,
       });
       toast.success("Data berhasil diperbarui!", { id: saveToastId });
 
-      // Jika gambar berubah dan gambar lama ada di Vercel Blob, hapus gambar lama
       if (
         oldImageUrl &&
         oldImageUrl !== newImageUrl &&
         oldImageUrl.includes("blob.vercel-storage.com")
       ) {
-        console.log(`Menghapus gambar lama: ${oldImageUrl}`);
         await fetch(`/api/upload?url=${encodeURIComponent(oldImageUrl)}`, {
           method: "DELETE",
         });
@@ -102,19 +98,18 @@ export default function EditCurugPage() {
         <p>Loading form...</p>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* ... (input lainnya tetap sama) ... */}
-          <Input {...register("name")} label="Nama Curug" variant="flat" />
-          <Input {...register("location")} label="Lokasi" variant="flat" />
+          <Input {...register("name")} label="Nama Curug" variant="bordered" />
+          <Input {...register("location")} label="Lokasi" variant="bordered" />
           <Textarea
             {...register("description")}
             label="Deskripsi"
-            variant="flat"
+            variant="bordered"
           />
           <Input
             {...register("ticketPrice")}
             label="Harga Tiket (cth: 15000)"
             type="number"
-            variant="flat"
+            variant="bordered"
           />
           <fieldset className="border p-4 rounded-md">
             <legend className="text-sm font-medium text-gray-900 px-1">
@@ -127,20 +122,20 @@ export default function EditCurugPage() {
                   {...register(`openingHours.${day}`)}
                   label={day.charAt(0).toUpperCase() + day.slice(1)}
                   placeholder="cth: 08:00 - 17:00 atau Tutup"
-                  variant="flat"
+                  variant="bordered"
                 />
               ))}
               <Input
                 {...register("openingHours.catatan")}
                 label="Catatan Tambahan"
-                variant="flat"
+                variant="bordered"
               />
             </div>
           </fieldset>
           <Select
             {...register("difficulty")}
             label="Tingkat Kesulitan"
-            variant="flat"
+            variant="bordered"
           >
             <SelectItem key="MUDAH">Mudah</SelectItem>
             <SelectItem key="SEDANG">Sedang</SelectItem>
@@ -149,7 +144,7 @@ export default function EditCurugPage() {
           <Input
             {...register("tags")}
             label="Tags (pisahkan dengan koma, cth: Ramah Anak, Spot Foto)"
-            variant="flat"
+            variant="bordered"
           />
 
           {currentImageUrl && (
@@ -190,7 +185,7 @@ export default function EditCurugPage() {
           <Input
             {...register("imageUrl")}
             label="Atau ganti dengan URL Gambar manual"
-            variant="flat"
+            variant="bordered"
           />
 
           <div className="flex gap-4 pt-4">

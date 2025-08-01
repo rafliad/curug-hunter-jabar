@@ -20,7 +20,6 @@ export async function PATCH(
   if (status === "APPROVED") {
     const updateData: Prisma.CurugUpdateInput = {};
 
-    // Gunakan switch yang lengkap untuk memastikan type safety
     switch (fieldName) {
       case "ticketPrice":
         updateData.ticketPrice = parseInt(newValue, 10);

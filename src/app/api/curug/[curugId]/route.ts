@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { normalize } from "@/lib/utils/formatters";
 
-// Fungsi untuk mengambil SATU data curug berdasarkan ID
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ curugId: string }> }
@@ -14,7 +13,6 @@ export async function GET(
   return NextResponse.json(curug);
 }
 
-// Fungsi untuk MENGUPDATE data curug berdasarkan ID
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ curugId: string }> }
@@ -37,7 +35,6 @@ export async function PATCH(
   }
 
   const price = ticketPrice ? parseInt(String(ticketPrice), 10) : null;
-  // Ubah string tags kembali menjadi array sebelum disimpan
   const tagArray =
     typeof tags === "string"
       ? tags.split(",").map((tag: string) => tag.trim())
@@ -53,13 +50,12 @@ export async function PATCH(
       ticketPrice: price,
       difficulty,
       tags: tagArray,
-      openingHours, // Langsung simpan objek JSON
+      openingHours,
     },
   });
   return NextResponse.json(updatedCurug);
 }
 
-// Fungsi untuk MENGHAPUS data curug berdasarkan ID
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ curugId: string }> }

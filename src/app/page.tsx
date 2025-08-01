@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import CurugBrowser from "@/components/CurugBrowser";
+import WelcomeGuide from "@/components/WelcomeGuide";
 
 export default async function HomePage() {
   const allCurugData = await prisma.curug.findMany({
@@ -10,7 +11,8 @@ export default async function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">
+      <WelcomeGuide role="USER" />
+      <h1 className="text-4xl text-blue-50 font-bold mb-8 text-center">
         Jelajahi Surga Tersembunyi di Jawa Barat
       </h1>
       <CurugBrowser initialCurug={allCurug} />

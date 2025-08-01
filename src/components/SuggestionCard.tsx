@@ -5,7 +5,6 @@ import { Card, CardBody, CardFooter, Button, Chip } from "@heroui/react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-// Definisikan tipe data yang lebih lengkap
 type Suggestion = {
   id: string;
   fieldName: string;
@@ -46,7 +45,7 @@ export default function SuggestionCard({
   };
 
   if (isHandled) {
-    return null; // Sembunyikan kartu setelah ditangani
+    return null;
   }
 
   return (
@@ -64,11 +63,11 @@ export default function SuggestionCard({
             {suggestion.fieldName.replace(/([A-Z])/g, " $1")}
           </p>
           <div className="flex items-center gap-4 mt-2">
-            <Chip color="danger" variant="flat" size="sm">
+            <Chip color="danger" variant="bordered" size="sm">
               Lama: {suggestion.oldValue || "Kosong"}
             </Chip>
             <span className="font-bold">→</span>
-            <Chip color="success" variant="flat" size="sm">
+            <Chip color="success" variant="bordered" size="sm">
               Baru: {suggestion.newValue}
             </Chip>
           </div>
