@@ -44,7 +44,7 @@ export default function CurugBrowser({ initialCurug }: CurugBrowserProps) {
               <Link
                 href={`/curug/${curug.id}`}
                 key={curug.id}
-                className="group block bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                className="group block bg-blue-50 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
               >
                 <div className="relative w-full h-48">
                   <SafeImage

@@ -31,10 +31,10 @@ export default function CurugDetailClient({
     curug.openingHours as Prisma.JsonObject as OpeningHoursStructure | null;
 
   return (
-    <div className="bg-white">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-neutral-800">
+      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         {curug.imageUrl && (
-          <div className="relative w-full h-64 sm:h-96">
+          <div className="relative w-full h-96 sm:h-[550px]">
             <SafeImage
               src={curug.imageUrl}
               alt={`Foto ${curug.name}`}
