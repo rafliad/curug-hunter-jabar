@@ -4,8 +4,6 @@ This project is a final assignment for a full-stack developer program. It is a f
 
 **Live Demo:** https://curug-hunter-jabar.vercel.app/
 
-**Video Demo:** [Link to your YouTube/Loom video]
-
 ## Project Description
 
 **Curug Hunter Jabar** is a community-based web platform designed to be the most comprehensive guide for tourists and nature lovers looking to explore waterfalls (known as "curug") in the West Java region.

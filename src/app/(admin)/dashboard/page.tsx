@@ -11,6 +11,7 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import axios from "axios";
+import WelcomeGuide from "@/components/WelcomeGuide";
 
 type Curug = {
   id: string;
@@ -70,6 +71,7 @@ export default function DashboardPage() {
   return (
     <>
       <div className="p-8">
+        <WelcomeGuide role="ADMIN" />
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Admin Dashboard - Data Curug</h1>
           <Button color="primary" as={Link} href="/dashboard/add">
