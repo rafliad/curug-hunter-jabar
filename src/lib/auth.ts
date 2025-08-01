@@ -65,6 +65,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.emailVerified = user.emailVerified; // <-- TAMBAHKAN INI
       }
       return token;
     },
@@ -73,6 +74,7 @@ export const authOptions: NextAuthOptions = {
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as UserRole;
+        session.user.emailVerified = token.emailVerified as Date | null; // <-- DAN INI
       }
       return session;
     },

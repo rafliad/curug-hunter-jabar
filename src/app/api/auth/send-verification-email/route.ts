@@ -3,7 +3,6 @@ import nodemailer from "nodemailer";
 import prisma from "@/lib/prisma";
 import crypto from "crypto";
 
-// Konfigurasi "tukang pos" Nodemailer
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {

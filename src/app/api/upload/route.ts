@@ -9,7 +9,6 @@ export async function POST(request: Request): Promise<NextResponse> {
     return new NextResponse("Filename is required", { status: 400 });
   }
 
-  // `request.body` berisi file itu sendiri
   const blob = await put(filename, request.body, {
     access: "public",
   });

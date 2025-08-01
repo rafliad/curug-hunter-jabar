@@ -31,10 +31,27 @@ export default function SuggestionButton({
   currentValue,
   label,
 }: SuggestionButtonProps) {
-  const { status } = useSession();
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [newValue, setNewValue] = useState("");
   const [isFree, setIsFree] = useState(false);
+  const [isNegative, setIsNegative] = useState(false);
+
+  const handlePriceChange = (val: string) => {
+    const num = Number(val);
+    if (val === "") {
+      setIsNegative(false);
+      setNewValue(val);
+      return;
+    }
+
+    if (!isNaN(num) && num < 0) {
+      setIsNegative(true);
+    } else {
+      setIsNegative(false);
+      setNewValue(val);
+    }
+  };
 
   const handleFreeChange = (checked: boolean) => {
     setIsFree(checked);
@@ -66,9 +83,8 @@ export default function SuggestionButton({
     }
   };
 
-  if (status !== "authenticated") return null;
+  if (!session?.user?.emailVerified) return null;
 
-  // Fungsi untuk merender input yang sesuai
   const renderInput = () => {
     switch (fieldName) {
       case "ticketPrice":
@@ -77,11 +93,13 @@ export default function SuggestionButton({
             <Input
               label={`Masukkan ${label} yang baru`}
               value={newValue}
-              onValueChange={setNewValue}
-              variant="flat"
+              onValueChange={handlePriceChange}
+              variant="bordered"
               type="number"
-              placeholder="Masukkan harga dalam angka"
               disabled={isFree}
+              isInvalid={isNegative}
+              color={isNegative ? "danger" : "default"}
+              errorMessage={isNegative ? "Harga tidak boleh di bawah 0" : ""}
             />
             <Checkbox isSelected={isFree} onValueChange={handleFreeChange}>
               Gratis
@@ -96,6 +114,7 @@ export default function SuggestionButton({
             onSelectionChange={(keys) =>
               setNewValue(Array.from(keys)[0] as string)
             }
+            variant="bordered"
           >
             <SelectItem key="MUDAH">Mudah</SelectItem>
             <SelectItem key="SEDANG">Sedang</SelectItem>
@@ -108,7 +127,7 @@ export default function SuggestionButton({
             label={`Masukkan ${label} yang baru`}
             value={newValue}
             onValueChange={setNewValue}
-            variant="flat"
+            variant="bordered"
           />
         );
     }
