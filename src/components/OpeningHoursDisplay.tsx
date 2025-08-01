@@ -16,7 +16,7 @@ export default function OpeningHoursDisplay({
   hours,
   curugId,
 }: OpeningHoursDisplayProps) {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!hours) return null;
@@ -39,7 +39,7 @@ export default function OpeningHoursDisplay({
         <CardBody className="bg-blue-50">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-lg font-semibold">Jam Operasional</h3>
-            {status === "authenticated" && (
+            {session?.user?.emailVerified && (
               <Button
                 variant="light"
                 size="sm"

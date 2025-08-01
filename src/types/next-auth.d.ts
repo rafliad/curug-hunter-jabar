@@ -9,6 +9,7 @@ declare module "next-auth" {
     user: {
       id: string;
       role: UserRole;
+      emailVerified: Date | null;
     } & DefaultSession["user"];
   }
 
@@ -17,5 +18,6 @@ declare module "next-auth" {
    */
   interface User {
     role: UserRole;
+    emailVerified: Date | null;
   }
 }

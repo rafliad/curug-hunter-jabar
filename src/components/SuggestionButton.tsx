@@ -31,7 +31,7 @@ export default function SuggestionButton({
   currentValue,
   label,
 }: SuggestionButtonProps) {
-  const { status } = useSession();
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [newValue, setNewValue] = useState("");
   const [isFree, setIsFree] = useState(false);
@@ -83,7 +83,7 @@ export default function SuggestionButton({
     }
   };
 
-  if (status !== "authenticated") return null;
+  if (!session?.user?.emailVerified) return null;
 
   const renderInput = () => {
     switch (fieldName) {
