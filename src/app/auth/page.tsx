@@ -28,7 +28,18 @@ export default function AuthPage() {
     if (variant === "REGISTER") {
       axios
         .post("/api/register", data)
-        .then(() => signIn("credentials", data))
+        .then(() =>
+          signIn("credentials", { ...data, redirect: false }).then(
+            (callback) => {
+              if (callback?.error) {
+                console.error("Invalid credentials");
+              }
+              if (callback?.ok && !callback?.error) {
+                router.push("/dashboard");
+              }
+            }
+          )
+        )
         .catch((error) => {
           if (error instanceof Error) {
             console.error("Registration failed:", error.message);
